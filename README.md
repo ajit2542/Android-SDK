@@ -104,16 +104,16 @@ Below the different methods to retrieve the buildings:
 getBuildings(GetBuildingsCallback callback)
 ```
 ```java
-getBuildings(List&lt;String&gt; buildingIdList, GetBuildingsCallback callback)
+getBuildings(List<String> buildingIdList, GetBuildingsCallback callback)
 ```
 ```java
 getBuildings(String boundingBox, GetBuildingsCallback callback)
 ```
 ```java
-getBuildings(List&lt;String&gt; buildingIdList, String boundingBox, GetBuildingsCallback callback)
+getBuildings(List<String> buildingIdList, String boundingBox, GetBuildingsCallback callback)
 ￼￼```
 ```java
-getBuildings(List&lt;String&gt; buildingIdList, String boundingBox, int offset, int bucketSize, GetBuildingsCallback callback)
+getBuildings(List<String> buildingIdList, String boundingBox, int offset, int bucketSize, GetBuildingsCallback callback)
 ```	
 
 Parameter | Type | Description
@@ -141,7 +141,7 @@ Below the different methods to retrieve the buildings:
 getIbeaconsForBuildingOrFloor(String id, GetIbeaconsForBuildingOrFloorCallback callback)
 ```
 ```java
-getIbeaconsForBuildingOrFloor(ArrayList&lt;String&gt; ids, GetIbeaconsForBuildingOrFloorCallback callback)
+getIbeaconsForBuildingOrFloor(ArrayList<String> ids, GetIbeaconsForBuildingOrFloorCallback callback)
 ```
 
 Parameter | Type | Description
@@ -162,9 +162,11 @@ In order to compute the indoor position it is required a Bluetooth low energy sm
 ```xml
 <uses-sdk android:minSdkVersion="18"...
 <!-- Bluetooth -->
-<uses-permission android:name="android.permission.BLUETOOTH" /> <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+<uses-permission android:name="android.permission.BLUETOOTH" /> 
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 <!-- GPS -->
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> 
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
 ```
 
@@ -268,8 +270,8 @@ This class includes all the information regarding POI and places stored in the s
 Parameter | Type | Description
 --------- | ---- | -----------
 id | String | Unique ID
-x | Number* | WGS84 Longitude
-y | Number* | WGS84 Latitude
+x | double | WGS84 Longitude
+y | double | WGS84 Latitude
 name | String | Area name
 building | String | Buinding ID
 floor | String | Floor ID
