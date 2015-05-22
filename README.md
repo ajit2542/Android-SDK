@@ -88,9 +88,9 @@ public Indoor(String oymUrl, String user, String password, ConnectCallback callb
 Once the Indoor object is initialized, the ConnectCallback will be called after attempting to connect to the server directly.
 
 ##### Example
-If the user `user@indoor.test` with password `password` wants to connect to the server located at `https://indoor.onyourmap.com`, with an already ConnectCallback defined called `callback` and without autoconnection, the user shall use:
+If the user with account `test` with password `password` wants to connect to the server located at `https://indoor.onyourmap.com:8443/links`, with an already ConnectCallback defined called `callback` and without autoconnection, the user shall use:
 ```java
-new Indoor(“https//indoor.onyourmap.com”, “user@indoor.test”, “password”, callback);
+new Indoor(“https://indoor.onyourmap.com:8443/links”, “user@indoor.test”, “password”, callback);
 ```
 
 #### Get Buildings
@@ -100,18 +100,23 @@ Once the user is correctly logged in to the server, the user can start retrievin
 In order to handle the process a GetBuildingsCallback needs to be defined. This callback includes the method *onSucceed(List&lt;Building&gt; buildings)* that includes the list of buildings retrieved from the server. In case that the process fails, the *onFailure(Exception exc)* method will be called, with further information of the error.
 
 Below the different methods to retrieve the buildings:
+
 ```java
 getBuildings(GetBuildingsCallback callback)
 ```
+
 ```java
 getBuildings(List<String> buildingIdList, GetBuildingsCallback callback)
 ```
+
 ```java
 getBuildings(String boundingBox, GetBuildingsCallback callback)
 ```
+
 ```java
 getBuildings(List<String> buildingIdList, String boundingBox, GetBuildingsCallback callback)
 ￼￼```
+
 ```java
 getBuildings(List<String> buildingIdList, String boundingBox, int offset, int bucketSize, GetBuildingsCallback callback)
 ```	
