@@ -115,7 +115,7 @@ getBuildings(String boundingBox, GetBuildingsCallback callback)
 
 ```java
 getBuildings(List<String> buildingIdList, String boundingBox, GetBuildingsCallback callback)
-￼￼```
+```
 
 ```java
 getBuildings(List<String> buildingIdList, String boundingBox, int offset, int bucketSize, GetBuildingsCallback callback)
