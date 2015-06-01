@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Common Strings -->
+    <string name="app_name">Indoor Navigator</string>
+    <string name="settings">Configuració</string>
+    <string name="enable">Activar</string>
+    <string name="exit">Sortir</string>
+    <string name="add">Afegir</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel·lar</string>
+    <string name="login">Inicia la sessió</string>
+    <string name="logout">Tanca la sessió</string>
+    <string name="options">Opcions</string>
+    <string name="help">Ajuda</string>
+    
+    <!-- Activity Start -->
+    <string name="ASLocationMessage">Per tal de millorar el rendiment, activa els serveis de localització, i assegura\'t que el mode d\'alta precisió està seleccionat</string>
+
+    <!-- Fragment Splashscreen -->
+    <string name="SLogoDesc">Logo</string>
+    <string name="FSAccountHint">Compte</string>
+    <string name="FSPasswordHint">Contrasenya</string>
+    <string name="FSConnecting">Connectant&#8230;</string>
+    <string name="FSConnectError">No es pot connectar amb el servidor</string>
+    <string name="FSLibError">La llibreria indoor no es cop executar</string>
+    <string name="FSGraph">Construint graph&#8230;</string>
+    <string name="FSGraphError">No es pot construir el graph</string>
+    
+    <!-- Help -->
+    <string name="HText">Necessites credencials, ajuda o la guia d\'usuari? Contacta\'ns a indoor@onyourmap.com</string>
+    
+    <!-- Fragment Upper Bar -->
+    <string name="FUBDestination">Destinació</string>
+    <string name="FUBLevel">Planta</string>
+    <string name="FUBYouAre">Ets a</string>
+    <string name="FUBSaved">Punt</string>
+    
+    <!-- Activity Map -->
+    <string name="AMTitle">Mapa</string>
+    <string name="AMDestination">Destinació</string>
+    <string name="AMGettingRoute">Calculant la ruta&#8230;</string>
+    <string name="AMCustomDest">Destinació personalitzada</string>
+
+    <!-- Activity Map Notifications -->
+    <string name="AMNTitle">Notificació</string>
+    <string name="AMNEnter">Estàs entrant a</string>
+    <string name="AMNStay">Ets a</string>
+    <string name="AMNLeave">Estàs marxant de</string>
+    <string name="AMNNearby">Ets a prop de</string>
+
+    <!-- Activity Map Dialog -->
+    <string name="AMDTitle">Tancar l\'app?</string>
+    <string name="AMDNav">La navegació deixarà d\'estar disponible</string>
+    <string name="AMDMap">El plànol de l\'edifici deixarà d\'estar disponible</string>
+    
+    <!-- Fragment Drawer -->
+    <string name="FDStop">Atura la navegació</string>
+    <string name="FDNoAreas">No hi ha llocs disponibles</string>
+    <string name="FDStoreTitle">Punt</string>    
+    <string name="FDStore">Guardar</string>
+    <string name="FDStoreToast">Punt guardat</string>
+    <string name="FDUpdate">Actualitzar</string>
+    <string name="FDUpdateToast">Punt actualitzat</string>
+    <string name="FDRestore">Anar-hi</string>
+    <string name="FDDelete">Esborrar</string>    
+    <string name="FDDeleteToast">Punt esborrat</string>
+    
+</resources>

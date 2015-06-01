@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/joan/AndroidStudioProjects/Indoor/indoor/src/main/res/values-fr/strings_routing.xml -->
+    <eat-comment/>
+    <plurals name="routing_in_meters">
+        <item quantity="one">Dans %1$d mètre</item>
+        <item quantity="other">Dans %1$d mètres</item>
+    </plurals>
+    <string name="routing_arrival">Vous arrivez à destination</string>
+    <string name="routing_downelevator">Prenez l\'ascenceur et descendez à l\'étage %1$d</string>
+    <string name="routing_downstairs">Descendez l\'escalier jusqu\'à l\'étage %1$d</string>
+    <string name="routing_now">Maintenant</string>
+    <string name="routing_straight">Continuez tout droit</string>
+    <string name="routing_turnleft">Tournez à gauche</string>
+    <string name="routing_turnright">Tournez à droite</string>
+    <string name="routing_upelevator">Prenez l\'ascenceur et montez à l\'étage %1$d</string>
+    <string name="routing_upstairs">Montez l\'escalier jusqu\'à l\'étage %1$d</string>
+</resources>
