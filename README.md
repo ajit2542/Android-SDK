@@ -17,8 +17,23 @@ The indoor module is split in three different packages:
 Finally we need to define the Indoor Service to be used```xml<application…        <service            android:name="com.oym.indoor.location.IndoorLocationService"            android:exported="false" />```
 
 ### Importing libraries
-In order to work properly, the app shall include the following libraries:
--	indoor-1.2.0.jar-	oym-links-sdk.1.4.1.jar-	httpclientandroidlib-1.1.2.jar-	jackson-core-asl-1.9.12.jar-	jackson-jaxrs-1.9.12.jar-	jackson-mapper-asl-1.9.12.jar-	jackson-xc-1.9.12.jarThe app shall include the Google Play Services in order to be able to use the Google Location Services API.## Preparing a sample appIn order to use the indoor library, a basic Android app shall be created. After making all the modifications mentioned in the previous section, it is necessary to bear in mind that the application is using the Google Services API, Bluetooth and WiFi/Network connection, hence it is necessary to check that all this features are available.
+In order to work properly, the app shall include the following Gradle dependencies:
+
+```groovy
+compile(name:'indoor-1.2.0', ext:'aar')
+compile 'com.android.support:support-v4:22.0.0'
+compile 'com.android.support:appcompat-v7:22.0.0'
+compile 'com.android.support:recyclerview-v7:21.0.3'
+compile 'com.google.android.gms:play-services-location:7.0.0'
+compile 'com.google.android.gms:play-services-maps:7.0.0'
+compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.12'
+compile 'org.codehaus.jackson:jackson-core-asl:1.9.12'
+compile 'org.codehaus.jackson:jackson-jaxrs:1.9.12'
+compile 'org.codehaus.jackson:jackson-xc:1.9.12'
+```
+
+For the Eclipse project, it is required to add the following jars:
+-	indoor-1.2.0.jar-	oym-links-sdk.1.4.1.jar-	httpclientandroidlib-1.1.2.jar-	jackson-core-asl-1.9.12.jar-	jackson-jaxrs-1.9.12.jar-	jackson-mapper-asl-1.9.12.jar-	jackson-xc-1.9.12.jarThe app shall include the Google Play Services in order to be able to use the Google Location Services API. It is also required the v4, v7 appcompat, v7 recycler view support libraries to compile the app [+info](http://developer.android.com/tools/support-library/setup.html).## Preparing a sample appIn order to use the indoor library, a basic Android app shall be created. After making all the modifications mentioned in the previous section, it is necessary to bear in mind that the application is using the Google Services API, Bluetooth and WiFi/Network connection, hence it is necessary to check that all this features are available.
 The next step is to define an `IndoorLocationBroadcast` to handle the computed position. This `IndoorLocationBroadcast` will be called each time a position is computed.```javaprivate IndoorLocationBroadcast broadcast = new IndoorLocationBroadcast() {		@Override		public void onReceive(IndoorLocation location) {			// TODO Auto-generated method stub		}	};```
 The `IndoorLocation` object includes the following fields:```java/** WGS84 Longitude */public final double longitude;/** WGS84 Latitude */public final double latitude;/** Number of iBeacons used */public final int used;/** Position accuracy (meters) */public final double accuracy;/** List including the longitude, latitude and accuracy of each iBeacon in sight */public final ArrayList<Double> found;
 /** Floor number */public final int floor;/** Positioning type: {@link TYPE_IBEACON}, {@link TYPE_FUSED} */public final int type;/** Building name */public final String bName;/** Number of geofences crossed */public final int geofences;```
