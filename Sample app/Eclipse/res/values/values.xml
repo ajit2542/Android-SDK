@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/joan/AndroidStudioProjects/Indoor/indoor/src/main/res/values/strings_routing.xml -->
+    <!-- From: file:/Users/joan/Documents/JC/Git/Dev-Github/Android-SDK-dev/indoor/src/main/res/values/strings_routing.xml -->
     <eat-comment/>
     <plurals name="routing_in_meters">
         <item quantity="one">In %1$d meter</item>
         <item quantity="other">In %1$d meters</item>
     </plurals>
-
-    <!-- From: file:/Users/joan/AndroidStudioProjects/Indoor/indoor/src/main/res/values/strings_routing.xml -->
+    <!-- From: file:/Users/joan/Documents/JC/Git/Dev-Github/Android-SDK-dev/indoor/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">IndoorLibrary</string>
+    <!-- From: file:/Users/joan/Documents/JC/Git/Dev-Github/Android-SDK-dev/indoor/src/main/res/values/strings_routing.xml -->
     <eat-comment/>
     <string name="routing_arrival">You will reach your destination</string>
     <string name="routing_downelevator">Take the lift down to %1$d floor</string>
@@ -18,7 +20,7 @@
     <string name="routing_turnright">Turn right</string>
     <string name="routing_upelevator">Take the lift up to %1$d floor</string>
     <string name="routing_upstairs">Go upstairs to the %1$d floor</string>
-    <!-- From: file:/Users/joan/AndroidStudioProjects/Indoor/indoor/src/main/res/values/styles.xml -->
+    <!-- From: file:/Users/joan/Documents/JC/Git/Dev-Github/Android-SDK-dev/indoor/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--

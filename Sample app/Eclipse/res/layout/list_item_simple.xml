@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="48dp"
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
     android:background="@android:color/transparent"
     android:gravity="center_vertical"
     android:theme="@style/AppTheme"
@@ -11,7 +12,7 @@
         android:id="@+id/LSITitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:padding="16dp"
         android:text="@string/app_name"
         android:textColor="@color/textColor"
         android:textSize="16sp" />

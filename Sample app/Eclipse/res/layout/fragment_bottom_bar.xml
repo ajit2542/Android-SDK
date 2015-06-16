@@ -41,6 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/FBBDistance"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="@string/FUBLevel"
             android:textColor="@color/textPrimaryColor"
             android:textSize="24sp" />

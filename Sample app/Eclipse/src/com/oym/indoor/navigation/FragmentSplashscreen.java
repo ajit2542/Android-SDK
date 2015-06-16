@@ -44,7 +44,10 @@ public class FragmentSplashscreen extends Fragment {
 	private static final String KEY_PREF_USER = "OYM_KEY_USER";
 	private static final String KEY_PREF_PASSWORD = "OYM_KEY_PASSWORD";
 	public static final String KEY_PREF_AUTOLOGIN = "OYM_KEY_AUTOLOGIN";
-	
+
+	private static final String ERROR_USERNAME = "unknown username";
+	private static final String ERROR_PASSWORD = "invalid password";
+
 	private static final String USER_PREFIX = "user@indoor.";
 	private static final String URL = "https://indoor.onyourmap.com:8443/links";	
 	
@@ -87,11 +90,22 @@ public class FragmentSplashscreen extends Fragment {
 
 		@Override
 		public void onFailure(Exception exc) {
-			showError(R.string.FSConnectError);
 			Log.e(TAG, "Links: Error connecting: "+exc.getMessage());
 			SharedPreferences.Editor sharedPrefsEditor = gs.getSharedPrefs().edit();
 			sharedPrefsEditor.putBoolean(KEY_PREF_AUTOLOGIN, false);
 			sharedPrefsEditor.commit();
+
+			switch (exc.getMessage()) {
+				case ERROR_USERNAME:
+					showError(R.string.FSConnectUsernameError);
+					break;
+				case ERROR_PASSWORD:
+					showError(R.string.FSConnectPasswordError);
+					break;
+				default:
+					showError(R.string.FSConnectError);
+					break;
+			}
 		}
 	};
 	

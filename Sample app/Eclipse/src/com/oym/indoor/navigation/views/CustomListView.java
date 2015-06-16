@@ -52,6 +52,7 @@ public class CustomListView {
 		public final String title;
 		public final RoutePoint point;
 		private final boolean isClickable;
+		private View.OnClickListener listener;
 
 		public CustomSingleItem(String title) {
 			this(title, true);
@@ -72,6 +73,11 @@ public class CustomListView {
 			this.point = point;
 			this.isClickable = clickable;
 		}
+
+		public CustomSingleItem(String title, View.OnClickListener listener) {
+			this(title, true);
+			this.listener = listener;
+		}
 		
 		@Override
 		public String getTitle() {
@@ -82,7 +88,9 @@ public class CustomListView {
 		public View getView(LayoutInflater li, ViewGroup parent) {
 			// Set View
 			View v = li.inflate(R.layout.list_item_simple, parent, false);
-			if (!isClickable) {
+			if (isClickable && listener != null) {
+				v.setOnClickListener(listener);
+			} else if (!isClickable) {
 				v.setOnClickListener(null);
 			}
 			v.setOnLongClickListener(null);
@@ -198,4 +206,22 @@ public class CustomListView {
 			return v;
 		}
 	}
+
+	public static class CustomDivider implements CustomItems {
+
+		@Override
+		public String getTitle() {
+			return null;
+		}
+
+		@Override
+		public View getView(LayoutInflater li, ViewGroup parent) {
+			// Set view
+			View v = li.inflate(R.layout.list_divider, parent, false);
+			v.setOnClickListener(null);
+
+			return v;
+		}
+	}
+
 }

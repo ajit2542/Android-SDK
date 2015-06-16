@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/joan/Documents/JC/Git/Dev-Github/Android-SDK-dev/indoor/src/main/res/values-ca/strings_routing.xml -->
+    <eat-comment/>
+    <plurals name="routing_in_meters">
+        <item quantity="one">D\'aquí %1$d metre</item>
+        <item quantity="other">D\'aquí %1$d metres</item>
+    </plurals>
+    <string name="routing_arrival">Arribaràs a la teva destinació</string>
+    <string name="routing_downelevator">Baixa amb l\'ascensor al pis %1$d</string>
+    <string name="routing_downstairs">Baixa les escales fins al pis %1$d</string>
+    <string name="routing_now">Ara</string>
+    <string name="routing_straight">Continua tot recte</string>
+    <string name="routing_turnleft">Gira a l\'esquerre</string>
+    <string name="routing_turnright">Gira a la dreta</string>
+    <string name="routing_upelevator">Puja amb l\'ascensor al pis %1$d</string>
+    <string name="routing_upstairs">Puja les escales fins al pis %1$d</string>
+</resources>
