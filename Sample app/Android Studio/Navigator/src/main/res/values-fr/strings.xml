@@ -26,6 +26,8 @@
     <string name="FSLibError">La librairie indoor ne peux pas démarrer</string>
     <string name="FSGraph">Construction du réseau&#8230;</string>
     <string name="FSGraphError">Impossible de construire le réseau</string>
+    <string name="FSConnectUsernameError">Nom du compte incorrect</string>
+    <string name="FSConnectPasswordError">Mot de passe incorrect</string>
 
     <!-- Help -->
     <string name="HText">Besoin d\'un identifiant, d\'aide ou de guides techniques ? Contactez nous à l\'adresse indoor@onyourmap.com</string>
@@ -53,9 +55,17 @@
     <string name="AMDTitle">Quitter l\'app?</string>
     <string name="AMDNav">La navigation sera indisponible</string>
     <string name="AMDMap">L\'affichage des cartes indoor sera indisponible</string>
-    
+
+    <!--Activity Map Toast -->
+    <string name="AMTNoInternet">Connexion internet inexistante. L\'application fonctionnera en mode limité</string>
+    <string name="AMTNoBuildings">Il n\'y a pas encore de bâtiment</string>
+    <string name="AMTNoEdges">Aucun réseau de navigation pour %1$s</string>
+    <string name="AMTNoRoute">Pas d\'itinéraire possible jusqu\'à %1$s</string>
+    <string name="AMTMarkerNoIndoor">Seule une position indoor peut être enregistrée</string>
+
     <!-- Fragment Drawer -->
     <string name="FDStop">Stopper la navigation</string>
+    <string name="FDAreas">Lieux</string>
     <string name="FDNoAreas">Lieux indisponibles</string>
     <string name="FDStoreTitle">Marker</string>    
     <string name="FDStore">Enregistrer</string>

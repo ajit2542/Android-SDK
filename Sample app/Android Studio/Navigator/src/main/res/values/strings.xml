@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Common Strings -->
-    <string name="app_name">Sample App</string>
+    <string name="app_name">Indoor Navigator</string>
     <string name="settings">Settings</string>
     <string name="enable">Enable</string>
     <string name="exit">Exit</string>
@@ -26,6 +26,8 @@
     <string name="FSLibError">Indoor library cannot be started</string>
     <string name="FSGraph">Building graph&#8230;</string>
     <string name="FSGraphError">Graph cannot be built</string>
+    <string name="FSConnectUsernameError">Invalid account</string>
+    <string name="FSConnectPasswordError">Invalid password</string>
     
     <!-- Help -->
     <string name="HText">Do you need credentials, help or user guide? Contact us at indoor@onyourmap.com</string>
@@ -53,9 +55,17 @@
     <string name="AMDTitle">Close app?</string>
     <string name="AMDNav">Navigation will not be available</string>
     <string name="AMDMap">Indoor map will not be available</string>
-    
+
+    <!--Activity Map Toast -->
+    <string name="AMTNoInternet">No internet connection is available. App features might be limited</string>
+    <string name="AMTNoBuildings">No building has been created yet</string>
+    <string name="AMTNoEdges">Navigation network for %1$s is not created</string>
+    <string name="AMTNoRoute">Route cannot be computed to %1$s</string>
+    <string name="AMTMarkerNoIndoor">Only indoor markers can be stored</string>
+
     <!-- Fragment Drawer -->
     <string name="FDStop">Stop navigation</string>
+    <string name="FDAreas">Places</string>
     <string name="FDNoAreas">No places available</string>
     <string name="FDStoreTitle">Marker</string>    
     <string name="FDStore">Save</string>

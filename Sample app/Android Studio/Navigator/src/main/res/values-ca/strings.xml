@@ -26,6 +26,8 @@
     <string name="FSLibError">La llibreria indoor no es cop executar</string>
     <string name="FSGraph">Construint graph&#8230;</string>
     <string name="FSGraphError">No es pot construir el graph</string>
+    <string name="FSConnectUsernameError">Compte incorrecte</string>
+    <string name="FSConnectPasswordError">Contrasenya incorrecta</string>
     
     <!-- Help -->
     <string name="HText">Necessites credencials, ajuda o la guia d\'usuari? Contacta\'ns a indoor@onyourmap.com</string>
@@ -53,9 +55,17 @@
     <string name="AMDTitle">Tancar l\'app?</string>
     <string name="AMDNav">La navegació deixarà d\'estar disponible</string>
     <string name="AMDMap">El plànol de l\'edifici deixarà d\'estar disponible</string>
+
+    <!--Activity Map Toast -->
+    <string name="AMTNoInternet">S\'ha perdut la connexió a internet. Les functions de l\'app es poden veure limitades</string>
+    <string name="AMTNoBuildings">No s\'ha creat cap edifici per a aquest compte</string>
+    <string name="AMTNoEdges">No s\'ha creat la xarxa de navegació per %1$s</string>
+    <string name="AMTNoRoute">No es pot calcular la ruta cap a %1$s</string>
+    <string name="AMTMarkerNoIndoor">Només es poden guardar punts indoor</string>
     
     <!-- Fragment Drawer -->
     <string name="FDStop">Atura la navegació</string>
+    <string name="FDAreas">Llocs</string>
     <string name="FDNoAreas">No hi ha llocs disponibles</string>
     <string name="FDStoreTitle">Punt</string>    
     <string name="FDStore">Guardar</string>

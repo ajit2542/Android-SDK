@@ -4,18 +4,13 @@ package com.oym.indoor.navigation;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -32,7 +27,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.oym.indoor.Indoor.ConnectCallback;
-import com.oym.indoor.Notification;
 import com.oym.indoor.location.IndoorLocation;
 import com.oym.indoor.location.IndoorLocationBroadcast;
 import com.oym.indoor.location.IndoorLocationLib;
@@ -49,7 +43,10 @@ public class FragmentSplashscreen extends Fragment {
 	private static final String KEY_PREF_USER = "OYM_KEY_USER";
 	private static final String KEY_PREF_PASSWORD = "OYM_KEY_PASSWORD";
 	public static final String KEY_PREF_AUTOLOGIN = "OYM_KEY_AUTOLOGIN";
-	
+
+	private static final String ERROR_USERNAME = "unknown username";
+	private static final String ERROR_PASSWORD = "invalid password";
+
 	private static final String USER_PREFIX = "user@indoor.";
 	private static final String URL = "https://indoor.onyourmap.com:8443/links";	
 	
@@ -92,11 +89,22 @@ public class FragmentSplashscreen extends Fragment {
 
 		@Override
 		public void onFailure(Exception exc) {
-			showError(R.string.FSConnectError);
 			Log.e(TAG, "Links: Error connecting: "+exc.getMessage());
 			SharedPreferences.Editor sharedPrefsEditor = gs.getSharedPrefs().edit();
 			sharedPrefsEditor.putBoolean(KEY_PREF_AUTOLOGIN, false);
 			sharedPrefsEditor.commit();
+
+			switch (exc.getMessage()) {
+				case ERROR_USERNAME:
+					showError(R.string.FSConnectUsernameError);
+					break;
+				case ERROR_PASSWORD:
+					showError(R.string.FSConnectPasswordError);
+					break;
+				default:
+					showError(R.string.FSConnectError);
+					break;
+			}
 		}
 	};
 	

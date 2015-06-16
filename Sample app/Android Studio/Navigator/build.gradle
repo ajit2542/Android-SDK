@@ -8,7 +8,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 22
         versionCode 1
-        versionName "1.2.0"
+        versionName "1.2.1"
     }
     buildTypes {
         release {
@@ -29,7 +29,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile(name:'indoor-1.2.0', ext:'aar')
+    compile(name:'indoor-1.2.1', ext:'aar')
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:recyclerview-v7:21.0.3'

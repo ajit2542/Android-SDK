@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,6 +18,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,11 +68,12 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.oym.indoor.Building;
 import com.oym.indoor.Floor;
+import com.oym.indoor.Indoor;
 import com.oym.indoor.Indoor.GetBuildingsCallback;
 import com.oym.indoor.JSON;
 import com.oym.indoor.location.IndoorLocation;
-import com.oym.indoor.location.IndoorLocationLib;
 import com.oym.indoor.location.NotificationResult;
+import com.oym.indoor.navigation.views.CustomListView;
 import com.oym.indoor.navigation.views.CustomListView.CustomItems;
 import com.oym.indoor.navigation.views.CustomListView.CustomSection;
 import com.oym.indoor.navigation.views.CustomListView.CustomSingleItem;
@@ -92,7 +97,7 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 
 	private static final float MAP_CIRCLE_STROKE = 5;
 	private static final float MAP_ROUTE_WIDTH = 10;
-	private static final float MAP_TILT_NAVIGATION = 30;	
+	private static final float MAP_TILT_NAVIGATION = 30;
 	private static final int MAP_TIME_FIRSTUPDATE = 1000;
 	private static final int MAP_TIME_MARKER = 500;
 	private static final int MAP_TIME_NAVIGATION = 250;
@@ -100,8 +105,9 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 	private static final float MAP_ZINDEX_ROUTE = 2;
 	private static final float MAP_ZINDEX_CIRCLE = 3;
 	private static final float MAP_ZOOM_DEFAULT = 19;
+	private static final String NOTIFICATION_KEY_MESSAGE = "msg";
 	private static final double ROUTE_ARRIVAL_THRESHOLD = 2;
-	
+
 	// View	
 	private ActionBar actionBar;
 	private DrawerLayout drawerLayout;
@@ -120,8 +126,7 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 	private ImageView myLocImage;
 	private RelativeLayout myLocLayout;
 	private Bitmap markerBitmap;
-	private TextView logoutText;
-	
+
 	// Map
 	private GoogleMap map;
 	private TileOverlay tileOverlay;
@@ -129,7 +134,7 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 	private Circle circlePos;
 	private ArrayList<Polyline> mapRoute;
 	private int lastFloornumber;
-	
+
 	// Flags
 	private boolean avoidDestroy = false;
 	private boolean isFirstMapUpdate = false;
@@ -138,31 +143,32 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 	private boolean isNavigation = false;
 	private boolean isCameraUpdated = false;
 	private boolean isBuildingReady = false;
-    private boolean isNavigationReady = false;
-	
+	private boolean isNavigationReady = false;
+
 	// Stored position
 	private static final String KEY_STORED_POSITION = "OYM_KEY_STORED_POSITION";
 	private Bitmap storedBitmap;
 	private Marker storedMarker;
 	private RoutePoint storedPos;
-	private TextView storedPosText;
-	private TextView restorePosText;
-	private TextView deletePosText;
+	private CustomItems storeItem;
+	private CustomItems restoreItem;
+	private CustomItems deleteItem;
 
-    // Demo
-    private ArrayList<Marker> markers = new ArrayList<Marker>();
-    private ArrayList<Circle> circles = new ArrayList<Circle>();
-	
+	// Demo
+	private ArrayList<Marker> markers = new ArrayList<Marker>();
+	private ArrayList<Circle> circles = new ArrayList<Circle>();
+
 	// Stats
 	private int logCount = 0;
-	
+
 	// Navigation
-	private ArrayList<CustomItems> drawerItems; // FIXME
+	private ArrayList<CustomItems> drawerAreas;
 	private Instruction instruction;
 	private IndoorLocation currentPosition;
+	private final Object mutexPosition = new Object();
 	private StartNav taskStartNav;
 	private RoutePoint destination;
-		
+
 	private GlobalState gs;
 	private Context context;
 	private Handler handler;
@@ -173,99 +179,132 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 	// Notifications
 	private NotificationManager notificationManager;
 	private int notCounter = 1;
-	
-	
+
+
 	private CancelableCallback callbackMapCancelable = new CancelableCallback() {
-		
+
 		@Override
 		public void onFinish() {
 			handler.removeCallbacks(runnableEnableMap);
 			isMapUpdated = true;
 		}
-		
+
 		@Override
 		public void onCancel() {
 			handler.removeCallbacks(runnableEnableMap);
 			isMapUpdated = true;
 		}
 	};
-	
+
+	private GetBuildingsCallback callbackBuildingsInit = new GetBuildingsCallback() {
+		@Override
+		public void onSucceed(List<Building> list) {
+
+		}
+
+		@Override
+		public void onFailure(Exception e) {
+			if (e.getMessage().equals(Indoor.EXCEPTION_NO_BUILDINGS)) {
+				Toast.makeText(context, R.string.AMTNoBuildings, Toast.LENGTH_LONG).show();
+			}
+		}
+	};
+
 	private GetBuildingsCallback callbackBuildings = new GetBuildingsCallback() {
-		
+
 		@Override
 		public void onSucceed(List<Building> buildings) {
 			building = buildings.get(0);
 			fubLocal.setText(building.getName());
 
-            // Prepare routing
-            gs.setRouting(new Routing(gs.getLinks(), building.getId()));
-            gs.getRouting().init(callbackRouting);
+			// Prepare routing
+			gs.setRouting(new Routing(gs.getLinks(), building.getId()));
+			gs.getRouting().init(callbackRouting);
 
 			isBuildingReady = true;
-			
+
 			// Retrieve areas
 			gs.getLinks().getArea(building.getId(), callbackAreas);
-			
+
 			ArrayList<Integer> l = new ArrayList<Integer>();
-			for (Floor f: building.getFloorsList()) {
+			for (Floor f : building.getFloorsList()) {
 				l.add(f.getFloor());
 				floors.add(f);
 			}
 		}
-		
+
 		@Override
 		public void onFailure(Exception ex) {
 			building = null;
-			Log.e("JC","ERROR AREA");
 		}
 	};
 
-    private Routing.RoutingCallback callbackRouting = new Routing.RoutingCallback() {
-        @Override
-        public void onSucceed() {
-            isBuildingReady = true;
-            isNavigationReady = true;
-        }
+	private Routing.RoutingCallback callbackRouting = new Routing.RoutingCallback() {
+		@Override
+		public void onSucceed() {
+			isBuildingReady = true;
+			isNavigationReady = true;
+		}
 
-        @Override
-        public void onFailure(Exception exc) {
-            isNavigationReady = false;
+		@Override
+		public void onFailure(Exception exc) {
+			isNavigationReady = false;
 //            building = null;
-            Log.e("JC","Error Routing: ", exc);
-        }
-    };
+			Log.e("JC", "Error Routing: ", exc);
 
-	
+			if (exc.getMessage().equals(Routing.EXCEPTION_NO_EDGES) && building != null) {
+				Toast.makeText(context, getString(R.string.AMTNoEdges, building.getName()), Toast.LENGTH_LONG).show();
+			}
+		}
+	};
+
+
 	private GetAreaCallback callbackAreas = new GetAreaCallback() {
-		
+
 		@Override
 		public void onSucceed(List<Area> areas) {
-			drawerItems = new ArrayList<CustomItems>();
-			for (Area a: areas) {
+			drawerAreas = new ArrayList<>();
+			for (Area a : areas) {
 				// FIXME
-				CustomSingleItem csi = new CustomSingleItem(a.getName(), 
+				CustomSingleItem csi = new CustomSingleItem(a.getName(),
 						new RoutePoint(a.getX(), a.getY(), a.getFloornumber(), a.getBuilding()));
-				drawerItems.add(csi);
+				drawerAreas.add(csi);
 			}
 			populateDrawer();
 		}
-		
+
 		@Override
 		public void onFailure(Exception exc) {
-            if (building != null) {
-                gs.getLinks().getArea(building.getId(), callbackAreas);
-            }
-        }
+			if (building != null) {
+				gs.getLinks().getArea(building.getId(), callbackAreas);
+			}
+		}
 	};
-	
+
+	private BroadcastReceiver changeConnection = new BroadcastReceiver() {
+		private boolean hasInternet = true;
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			ConnectivityManager cm = (ConnectivityManager) context.getSystemService( Context.CONNECTIVITY_SERVICE );
+			NetworkInfo ani = cm.getActiveNetworkInfo();
+
+			if ((ani == null || !ani.isConnected()) && hasInternet) {
+				Toast.makeText(context, R.string.AMTNoInternet, Toast.LENGTH_LONG).show();
+				hasInternet = false;
+			} else if (ani != null && ani.isConnected()) {
+				hasInternet = true;
+			}
+		}
+	};
+
 	private Runnable runnableEnableMap = new Runnable() {
-		
+
 		@Override
 		public void run() {
 			isMapUpdated = true;
 		}
 	};
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -276,7 +315,7 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		handler = new Handler();
 		floors = new ArrayList<Floor>();
-		
+
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerList = (ListView) findViewById(R.id.DList);
 		fub = getSupportFragmentManager().findFragmentById(R.id.MUpperBar);
@@ -289,41 +328,40 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		fbbImage = (ImageView) findViewById(R.id.FBBImage);
 		myLocImage = (ImageView) findViewById(R.id.MMyLocation);
 		myLocLayout = (RelativeLayout) findViewById(R.id.MMyLocationLayout);
-		storedPosText = (TextView) findViewById(R.id.DStorePos);
-		restorePosText = (TextView) findViewById(R.id.DRestorePos);
-		deletePosText = (TextView) findViewById(R.id.DDeletePos);
-		logoutText = (TextView) findViewById(R.id.DLogout);
+
+		// Check if there are buildings
+		gs.getLinks().getBuildings(callbackBuildingsInit);
 
 		// Prepare view
 		hideUpperBar();
 		hideBottomBar();
 		registerForContextMenu(fbb.getView());
 		setMarkerBitmap();
-		
+
 		// Prepare Action Bar
 		actionBar = getSupportActionBar();
 		actionBar.hide();
-		
+
 		if (map == null) {
-			map =  ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.MMap)).getMap();
+			map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.MMap)).getMap();
 			if (map != null) {
 				map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                map.setIndoorEnabled(false);
+				map.setIndoorEnabled(false);
 				map.setBuildingsEnabled(false);
 				map.getUiSettings().setZoomControlsEnabled(false);
 				map.setOnMapLoadedCallback(new OnMapLoadedCallback() {
-					
+
 					@Override
 					public void onMapLoaded() {
 						isFirstMapUpdate = true;
-						
+
 						map.setOnMapLongClickListener(new OnMapLongClickListener() {
-							
+
 							@Override
 							public void onMapLongClick(LatLng point) {
 								// FIXME How destination is set
 								if (!isNavigation && isBuildingReady && isNavigationReady) {
-									destination = new RoutePoint(point.longitude, point.latitude, currentFloor, building.getId());									
+									destination = new RoutePoint(point.longitude, point.latitude, currentFloor, building.getId());
 									taskStartNav = new StartNav(destination, getResources().getString(R.string.AMCustomDest));
 									taskStartNav.execute();
 								}
@@ -333,24 +371,26 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 				});
 			}
 		}
-		
+
 		// Prepare Drawer        
 		drawerToggle = new ActionBarDrawerToggle(
 				this,                 /* host Activity */
 				drawerLayout,        /* DrawerLayout object */
 				R.string.AMDestination,  /* "open drawer" description */
 				R.string.AMTitle  /* "close drawer" description */
-				) {
+		) {
 
 			/** Called when a drawer has settled in a completely closed state. */
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
+				map.getUiSettings().setScrollGesturesEnabled(true);
 				actionBar.setTitle(R.string.AMTitle);
 			}
 
 			/** Called when a drawer has settled in a completely open state. */
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
+				map.getUiSettings().setScrollGesturesEnabled(false);
 				populateDrawer();
 				actionBar.setTitle(R.string.AMDestination);
 			}
@@ -358,18 +398,17 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		};
 		drawerLayout.setDrawerListener(drawerToggle);
 		drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
-		populateDrawer();
 		drawerList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
+									long arg3) {
 				toggleDrawer(); // Close drawer
-				if (!isNavigation) {	
-					CustomItems ci = drawerItems.get(position);
+				if (!isNavigation) {
+					CustomItems ci = drawerAreas.get(position-1);
 					if (ci instanceof CustomSingleItem) {
 						destination = ((CustomSingleItem) ci).point;
-						taskStartNav = new StartNav((CustomSingleItem)ci);
+						taskStartNav = new StartNav((CustomSingleItem) ci);
 						taskStartNav.execute();
 					}
 				} else {
@@ -379,9 +418,9 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 			}
 		});
 		drawerToggle.syncState();
-		
+
 		myLocLayout.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				if (!isNavigation) {
@@ -397,9 +436,9 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 				}
 			}
 		});
-		
+
 		fbb.getView().setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				getSupportFragmentManager().beginTransaction().replace(R.id.MMap, new FragmentInstructions(gs.getRoute().instructions)).addToBackStack("map").commit();
@@ -412,11 +451,12 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 				hideBottomBar();
 			}
 		});
-		
+
 		String json = gs.getSharedPrefs().getString(KEY_STORED_POSITION, "");
 		if (json.equals("")) {
-			restorePosText.setVisibility(View.GONE);
-			deletePosText.setVisibility(View.GONE);
+			storeItem = new CustomSingleItem(getString(R.string.FDStore), storeItemListener);
+			restoreItem = null;
+			deleteItem = null;
 		} else {
 			try {
 				storedPos = JSON.mapper.readValue(json, RoutePoint.class);
@@ -424,98 +464,47 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 						.icon(BitmapDescriptorFactory.fromBitmap(storedBitmap))
 						.anchor(0.5f, 0.5f).flat(true));
 				storedMarker.setVisible(false);
-				storedPosText.setText(R.string.FDUpdate);
-				restorePosText.setVisibility(View.VISIBLE);	
-				deletePosText.setVisibility(View.VISIBLE);
+				storeItem = new CustomSingleItem(getString(R.string.FDUpdate), storeItemListener);
+				restoreItem = new CustomSingleItem(getString(R.string.FDRestore), restoreItemListener);
+				deleteItem = new CustomSingleItem(getString(R.string.FDDelete), deleteItemListener);
 			} catch (Exception e) {
-				restorePosText.setVisibility(View.GONE);
-				deletePosText.setVisibility(View.GONE);
+				restoreItem = null;
+				deleteItem = null;
 			}
 		}
-		storedPosText.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				synchronized (currentPosition) {
-					if (currentPosition.type == IndoorLocation.TYPE_IBEACON) {
-						storedPos = new RoutePoint(currentPosition.longitude, 
-								currentPosition.latitude, 
-								currentPosition.floornumber, 
-								currentPosition.buildingId);
-						SharedPreferences.Editor sharedPrefsEditor = gs.getSharedPrefs().edit();
-						sharedPrefsEditor.putString(KEY_STORED_POSITION, storedPos.toLog());
-						sharedPrefsEditor.commit();
-						
-						if (storedMarker == null) {
-							storedMarker = map.addMarker(new MarkerOptions().position(storedPos.getLatLng())
-									.icon(BitmapDescriptorFactory.fromBitmap(storedBitmap))
-									.anchor(0.5f, 0.5f).flat(true));
-							storedPosText.setText(R.string.FDUpdate);
-							Toast.makeText(context, getString(R.string.FDStoreToast), Toast.LENGTH_LONG).show();
-						} else {
-							storedMarker.setPosition(storedPos.getLatLng());
-							Toast.makeText(context, getString(R.string.FDUpdateToast), Toast.LENGTH_LONG).show();
-						}
-						restorePosText.setVisibility(View.VISIBLE);	
-						deletePosText.setVisibility(View.VISIBLE);
-						toggleDrawer();
-					}
-				}
-			}
-		});
-		restorePosText.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if (!isNavigation) {
-					//FIXME
-					taskStartNav = new StartNav(storedPos, getResources().getString(R.string.FUBSaved));
-					taskStartNav.execute();
-					toggleDrawer();
-				}
-			}
-		});
-		deletePosText.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				SharedPreferences.Editor sharedPrefsEditor = gs.getSharedPrefs().edit();
-				sharedPrefsEditor.remove(KEY_STORED_POSITION);
-				sharedPrefsEditor.commit();
-				storedMarker.remove();
-				storedMarker = null;
-				storedPos = null;
-				storedPosText.setText(R.string.FDStore);
-				restorePosText.setVisibility(View.GONE);
-				deletePosText.setVisibility(View.GONE);
-				toggleDrawer();
-				Toast.makeText(context, getString(R.string.FDDeleteToast), Toast.LENGTH_LONG).show();
-			}
-		});
-		
-		logoutText.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				onLogout();
-			}
-		});
-		
+		populateDrawer();
+
 		// Attach listener
 		gs.addLocationCallback(this);
 	}
-	
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		// Register connectivity change receiver
+		registerReceiver(changeConnection, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+
+		// Detach connectivity change receiver
+		unregisterReceiver(changeConnection);
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		
+
 		// Detach listener
 		gs.removeLocationCallback(this);
 
 		if (tileOverlay != null) {
 			tileOverlay.remove();
 		}
-		
+
 		if (!avoidDestroy) {
 			if (gs.getLinks() != null) {
 				gs.getLinks().disconnect();
@@ -528,23 +517,23 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 			nm.cancelAll();
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keycode, KeyEvent e) {
 		if (drawerLayout != null) {
-			switch(keycode) {
-			case KeyEvent.KEYCODE_MENU:
-				if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-					toggleDrawer();				
-					return true;
-				} else {
-					break;
-				}
+			switch (keycode) {
+				case KeyEvent.KEYCODE_MENU:
+					if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+						toggleDrawer();
+						return true;
+					} else {
+						break;
+					}
 			}
 		}
-	    return super.onKeyDown(keycode, e);
+		return super.onKeyDown(keycode, e);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		FragmentManager fm = getSupportFragmentManager();
@@ -565,112 +554,117 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		} else {
 			int resource = isNavigation ? R.string.AMDNav : R.string.AMDMap;
 			alert = new AlertDialog.Builder(this)
-			.setTitle(R.string.AMDTitle)
-			.setMessage(resource)
-			.setPositiveButton(R.string.exit, new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			})
-			.setNegativeButton(R.string.cancel, new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					alert.dismiss();
-				}
-			})
-			.show();
+					.setTitle(R.string.AMDTitle)
+					.setMessage(resource)
+					.setPositiveButton(R.string.exit, new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							finish();
+						}
+					})
+					.setNegativeButton(R.string.cancel, new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							alert.dismiss();
+						}
+					})
+					.show();
 		}
 	}
-	
+
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {		
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-				onBackPressed();
-			} else if (drawerLayout != null) {
-				toggleDrawer();
-				return true;
-			}
-		default:
-			return super.onOptionsItemSelected(item);
+			case android.R.id.home:
+				if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+					onBackPressed();
+				} else if (drawerLayout != null) {
+					toggleDrawer();
+					return true;
+				}
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
-	                                ContextMenuInfo menuInfo) {
+									ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.setHeaderTitle(R.string.options);
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.map_navigation, menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.map_navigation, menu);
 	}
-	
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.MMNStop:
-			stopNavigation();
-			return true;
-		default:
-			return super.onContextItemSelected(item);
+			case R.id.MMNStop:
+				stopNavigation();
+				return true;
+			case R.id.MMNCancel:
+				dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+				return true;
+			default:
+				return super.onContextItemSelected(item);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void onLocationUpdate(IndoorLocation loc) {
-        currentPosition = loc;
+		synchronized (mutexPosition) {
+			currentPosition = loc;
+		}
 
 		// Change floor
-        if (currentPosition.type == IndoorLocation.TYPE_IBEACON && isMapUpdated && building != null) {
-            if (currentFloor != loc.floornumber || tileOverlay == null) {
-                changeFloor(loc.floornumber);
-            }
-            // Stored position
+		if (loc.type == IndoorLocation.TYPE_IBEACON && isMapUpdated && building != null) {
+			if (currentFloor != loc.floornumber || tileOverlay == null) {
+				changeFloor(loc.floornumber);
+			}
+			// Stored position
 			if (storedMarker != null) {
 				if (loc.floornumber == storedPos.floornumber) {
-                    storedMarker.setVisible(true);
+					storedMarker.setVisible(true);
 				} else {
 					storedMarker.setVisible(false);
 				}
 			}
-        }
+		}
 
-		
+
 		// Get building
-		if (loc.type == IndoorLocation.TYPE_IBEACON 
-				&& (building == null || (building != null && !building.getId().equals(loc.buildingId) && isBuildingReady) )) {
+		if (loc.type == IndoorLocation.TYPE_IBEACON
+				&& (building == null || (building != null && !building.getId().equals(loc.buildingId) && isBuildingReady))) {
 			ArrayList<String> ids = new ArrayList<String>();
 			ids.add(loc.buildingId);
 			gs.getLinks().getBuildings(ids, callbackBuildings);
 			isBuildingReady = false;
 		}
-		
+
 		// Route being created
 		if (taskStartNav != null && taskStartNav.getStatus() != AsyncTask.Status.FINISHED) {
 			return;
-		// Route created, nav mode set
+			// Route created, nav mode set
 		} else if (taskStartNav != null && taskStartNav.getStatus() == AsyncTask.Status.FINISHED) {
 			progressDialog.dismiss();
 			progressDialog = null;
 			taskStartNav = null;
 		}
-		
+
 		// Instructions mode
 		if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
 			return;
 		}
-		
+
 		LatLng point = new LatLng(loc.latitude, loc.longitude);
 		if (isFirstMapUpdate) {
-			isFirstMapUpdate = false;			
+			isFirstMapUpdate = false;
 			animateCamera(point, MAP_TIME_FIRSTUPDATE);
-		}		
-		
+		}
+
 		// Handle FUB visibility
 		if (loc.type == IndoorLocation.TYPE_IBEACON) {
 			showUpperBar(loc.floornumber);
@@ -679,27 +673,27 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		}
 
 		// Handle Navigation
-		if (isNavigation) {					
+		if (isNavigation) {
 			// Handle FBB visibility
 			if (!isFbbShown) {
-				showBottomBar();				
+				showBottomBar();
 				myLocLayout.setVisibility(View.GONE);
 			}
-				
+
 			// Get projected point
 			RoutingResult rr = gs.getRoute().getProjection(loc);
-			RouteProjectedPoint projPoint = rr.projectedPoint;					
+			RouteProjectedPoint projPoint = rr.projectedPoint;
 
 			if (!rr.isRecomputeRequired) {
 				// Get next instruction to show
 				instruction = gs.getRoute().getRouteInstruction(loc);
-				
+
 				// Update FBB
 				updateBottomBar(projPoint);
 
 				// Check end route
-				if (instruction.instruction == InstructionType.ARRIVAL 
-						&& instruction.distance-ROUTE_ARRIVAL_THRESHOLD <= projPoint.distanceFromStart) {
+				if (instruction.instruction == InstructionType.ARRIVAL
+						&& instruction.distance - ROUTE_ARRIVAL_THRESHOLD <= projPoint.distanceFromStart) {
 					stopNavigation();
 					drawUserPosition(point, loc.accuracy);
 				} else {
@@ -707,21 +701,21 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 					drawRoutePosition(projPoint, loc.accuracy);
 
 					// Update route
-					if (loc.type == IndoorLocation.TYPE_IBEACON 
-							&& (lastFloornumber != loc.floornumber) || mapRoute == null)  {
+					if (loc.type == IndoorLocation.TYPE_IBEACON
+							&& (lastFloornumber != loc.floornumber) || mapRoute == null) {
 						drawRoute(loc.floornumber);
 						lastFloornumber = loc.floornumber;
 					}
-				}	
+				}
 			} else {
 				taskStartNav = new StartNav(destination, fubLocal.getText().toString());
 				taskStartNav.execute();
-				for (Polyline pl: mapRoute) {
-                    pl.remove();
-                }
+				for (Polyline pl : mapRoute) {
+					pl.remove();
+				}
 				mapRoute = null;
 			}
-		} else {		
+		} else {
 			// Update map position
 			drawUserPosition(point, loc.accuracy);
 		}
@@ -729,22 +723,24 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 
 	@Override
 	public void onNotification(NotificationResult nr) {
-		String msg = null;
-		switch (nr.notification.action) {
-			case ENTER:
-				msg = gs.getString(R.string.AMNEnter) + " " + nr.place.getName();
-				break;
-			case STAY:
-				msg = gs.getString(R.string.AMNStay) + " " + nr.place.getName();
-				break;
-			case LEAVE:
-				msg = gs.getString(R.string.AMNLeave) + " " + nr.place.getName();
-				break;
-			case NEARBY:
-				msg = gs.getString(R.string.AMNNearby) + " " + nr.place.getName();
-				break;
-			default:
-				return;
+		String msg = nr.notification.properties.get(NOTIFICATION_KEY_MESSAGE);
+		if (msg == null) {
+			switch (nr.notification.action) {
+				case ENTER:
+					msg = gs.getString(R.string.AMNEnter) + " " + nr.place.getName();
+					break;
+				case STAY:
+					msg = gs.getString(R.string.AMNStay) + " " + nr.place.getName();
+					break;
+				case LEAVE:
+					msg = gs.getString(R.string.AMNLeave) + " " + nr.place.getName();
+					break;
+				case NEARBY:
+					msg = gs.getString(R.string.AMNNearby) + " " + nr.place.getName();
+					break;
+				default:
+					return;
+			}
 		}
 
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
@@ -767,11 +763,11 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		notificationManager.notify(notCounter, noti);
 		notCounter++;
 	}
-	
+
 	void setAvoidDestroy(boolean value) {
 		avoidDestroy = value;
 	}
-	
+
 	private void toggleDrawer() {
 		if (drawerLayout.isDrawerOpen(Gravity.START)) {
 			drawerLayout.closeDrawer(Gravity.START);
@@ -779,30 +775,62 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 			drawerLayout.openDrawer(Gravity.START);
 		}
 	}
-	
+
 	private void populateDrawer() {
 		EntryAdapter adapter;
 		if (isNavigation) {
 			ArrayList<CustomItems> di = new ArrayList<CustomItems>();
 			di.add(new CustomSection(getString(R.string.options)));
 			di.add(new CustomSingleItemImage(getString(R.string.FDStop), R.drawable.ic_stop));
+			di.addAll(getBottomDrawer());
 			adapter = new EntryAdapter(this, di);
 		} else {
-			if (drawerItems != null && drawerItems.size() != 0) {
-				adapter = new EntryAdapter(this, drawerItems);
+			if (drawerAreas != null && drawerAreas.size() != 0) {
+				ArrayList<CustomItems> di = new ArrayList<>();
+				di.add(new CustomSection(getString(R.string.FDAreas)));
+				di.addAll(drawerAreas);
+				di.addAll(getBottomDrawer());
+				adapter = new EntryAdapter(this, di);
 			} else {
 				ArrayList<CustomItems> di = new ArrayList<CustomItems>();
-				di.add(new CustomSingleItem("No Areas available", false));
+				di.add(new CustomSection(getString(R.string.FDAreas)));
+				di.add(new CustomSingleItem(getString(R.string.FDNoAreas), false));
+				di.addAll(getBottomDrawer());
 				adapter = new EntryAdapter(this, di);
 			}
 		}
 		drawerList.setAdapter(adapter);
 	}
 
+	private ArrayList<CustomItems> getBottomDrawer() {
+		ArrayList<CustomItems> items = new ArrayList<>();
+		if (!isNavigation) {
+			items.add(new CustomListView.CustomDivider());
+			items.add(new CustomSection(getString(R.string.FDStoreTitle)));
+			if (storeItem != null) {
+				items.add(storeItem);
+			}
+			if (restoreItem != null) {
+				items.add(restoreItem);
+			}
+			if (deleteItem != null) {
+				items.add(deleteItem);
+			}
+		}
+		items.add(new CustomListView.CustomDivider());
+		items.add(new CustomSingleItem(getString(R.string.logout), new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				onLogout();
+			}
+		}));
+		return items;
+	}
+
 	private void updateBottomBar(RouteProjectedPoint rpp) {
 		int dist = (int) (instruction.distance - rpp.distanceFromStart);
 		if (dist != 0) {
-			fbbDistance.setText(getResources().getQuantityString(R.plurals.routing_in_meters, 
+			fbbDistance.setText(getResources().getQuantityString(R.plurals.routing_in_meters,
 					dist, dist));
 		} else {
 			fbbDistance.setText(getString(R.string.routing_now));
@@ -810,16 +838,16 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		fbbInstruction.setText(InstructionAdapter.getString(this, instruction));
 		fbbImage.setImageResource(InstructionAdapter.getImageResource(instruction));
 	}
-	
+
 	private void showUpperBar() {
 		if (building == null) {
 			hideUpperBar();
 		} else {
-			fub.getView().setVisibility(View.VISIBLE);		
-			((RelativeLayout)fub.getView().findViewById(R.id.FUBLevelBox)).setVisibility(View.GONE);
+			fub.getView().setVisibility(View.VISIBLE);
+			((RelativeLayout) fub.getView().findViewById(R.id.FUBLevelBox)).setVisibility(View.GONE);
 		}
 	}
-	
+
 	private void showUpperBar(int floor) {
 //		if (floor == 2) { // FIXME
 //			fubImage.setImageResource(R.drawable.ic_floor_7_alpha);			
@@ -829,60 +857,60 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		if (building == null) {
 			hideUpperBar();
 		} else {
-			((RelativeLayout)fub.getView().findViewById(R.id.FUBLevelBox)).setVisibility(View.VISIBLE);
+			((RelativeLayout) fub.getView().findViewById(R.id.FUBLevelBox)).setVisibility(View.VISIBLE);
 			fubNumber.setText(Integer.toString(floor));
 			fub.getView().setVisibility(View.VISIBLE);
 		}
 	}
-	
+
 	private void hideUpperBar() {
 		fub.getView().setVisibility(View.GONE);
 	}
-	
+
 	private void showBottomBar() {
 		fbb.getView().setVisibility(View.VISIBLE);
 		isFbbShown = true;
 	}
-	
+
 	private void hideBottomBar() {
 		fbb.getView().setVisibility(View.GONE);
 		isFbbShown = false;
 	}
-	
+
 	/**
-	 *  This task starts the navigation mode.
+	 * This task starts the navigation mode.
 	 */
 	private class StartNav extends AsyncTask<Void, Void, Boolean> implements IndoorLocationListener {
 
 		private static final String TAG = "StartNav";
-		
+
 		private RoutePoint point;
 		private String title;
 		private Object mutex = new Object();
-		
+
 		public StartNav(CustomSingleItem csi) {
 			point = csi.point;
 			title = csi.getTitle();
 		}
-		
+
 		public StartNav(RoutePoint point, String title) {
 			this.point = point;
 			this.title = title;
 		}
-		
+
 		@Override
 		protected void onPreExecute() {
 			CameraPosition camera = CameraPosition.builder(map.getCameraPosition())
 					.tilt(MAP_TILT_NAVIGATION)
 					.build();
 			map.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
-			
+
 			// Set progress dialog
 			progressDialog = new ProgressDialog(context);
 			progressDialog.setMessage(getString(R.string.AMGettingRoute));
 			progressDialog.setIndeterminate(true);
 			progressDialog.setOnCancelListener(new OnCancelListener() {
-				
+
 				@Override
 				public void onCancel(DialogInterface dialog) {
 					taskStartNav.cancel(true);
@@ -893,43 +921,47 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 			fubLocal.setText(title);
 
 		}
-		
+
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			try {
-				if (currentPosition.type != IndoorLocation.TYPE_IBEACON) {
-					synchronized (mutex) {
-						gs.addLocationCallback(this);
-						mutex.wait();
+				synchronized (mutexPosition) {
+					if (currentPosition.type != IndoorLocation.TYPE_IBEACON) {
+						synchronized (mutex) {
+							gs.addLocationCallback(this);
+							mutex.wait();
+						}
 					}
-				}
-				RoutePoint rp = new RoutePoint(currentPosition.longitude, 
-						currentPosition.latitude, currentPosition.floornumber, 
-						currentPosition.buildingId);
-				Route r = gs.getRouting().computeRoute(rp, point);
-				if (r != null) {
-					gs.setRoute(r);
-					return true;
+					RoutePoint rp = new RoutePoint(currentPosition.longitude,
+							currentPosition.latitude, currentPosition.floornumber,
+							currentPosition.buildingId);
+					Route r = gs.getRouting().computeRoute(rp, point);
+					if (r != null) {
+						gs.setRoute(r);
+						return true;
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return false;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Boolean succeed) {
 			if (succeed) {
 				// Handle FUB visibility
 				showUpperBar();
 				actionBar.hide();
-				
+
 				// FBB visibility handled later, since depends on current inst				
-								
+
 				isNavigation = true;
 				populateDrawer(); // After change flag
 			} else {
 				Log.e(TAG, "Not successful");
+				stopNavigation();
+				Toast.makeText(context, getString(R.string.AMTNoRoute, title), Toast.LENGTH_LONG).show();
 			}
 		}
 
@@ -937,34 +969,39 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		public void onLocationUpdate(IndoorLocation location) {
 			if (location.type == IndoorLocation.TYPE_IBEACON) {
 				gs.removeLocationCallback(this);
+				synchronized (mutexPosition) {
+					currentPosition = location;
+				}
 				synchronized (mutex) {
-					currentPosition = location;									
 					mutex.notify();
 				}
 			}
 		}
 
 		@Override
-		public void onNotification(NotificationResult nr) {}
-		
-	};
+		public void onNotification(NotificationResult nr) {
+		}
+
+	}
+
+	;
 
 	private void stopNavigation() {
-		isNavigation = false;	
+		isNavigation = false;
 		CameraPosition camera = CameraPosition.builder(map.getCameraPosition())
 				.tilt(0)
 				.bearing(0)
 				.build();
 		map.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
-		
+
 		// Remove polyline
 		if (mapRoute != null) {
-            for (Polyline pl: mapRoute) {
-                pl.remove();
-            }
+			for (Polyline pl : mapRoute) {
+				pl.remove();
+			}
 			mapRoute = null;
-		}		
-	
+		}
+
 		fubDestination.setText(R.string.FUBYouAre);
 		fubLocal.setText(building.getName());
 		// Handle FBB visibility
@@ -974,19 +1011,19 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		destination = null;
 		populateDrawer();
 	}
-	
+
 	private void drawAnimatedMarker(final LatLng point, final double accuracy) {
-		if(markerPos != null) {
+		if (markerPos != null) {
 			final long startTime = SystemClock.elapsedRealtime();
 			final long duration = MAP_TIME_MARKER;
 			final LatLng start = markerPos.getPosition();
-			final Double startAcc = (circlePos == null) ? null: circlePos.getRadius();
+			final Double startAcc = (circlePos == null) ? null : circlePos.getRadius();
 			float[] result = new float[3];
-			Location.distanceBetween(start.latitude, start.longitude, point.latitude, point.longitude, result);		
+			Location.distanceBetween(start.latitude, start.longitude, point.latitude, point.longitude, result);
 			final boolean isMoving = (result[0] < 0.5) ? false : true;
 			final Interpolator itp = new AccelerateDecelerateInterpolator();
 			handler.post(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					long elapsed = SystemClock.elapsedRealtime() - startTime;
@@ -1017,7 +1054,7 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 			isMapUpdated = true;
 		}
 	}
-	
+
 	private void setCircle(LatLng point, double accuracy) {
 		circlePos = map.addCircle(new CircleOptions().center(point)
 				.radius(accuracy).zIndex(MAP_ZINDEX_CIRCLE)
@@ -1025,7 +1062,7 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 				.strokeColor(getResources().getColor(R.color.accentColorLight))
 				.strokeWidth(MAP_CIRCLE_STROKE));
 	}
-	
+
 	private void handleCircle(LatLng point, double accuracy) {
 		if (!isNavigation) {
 			if (circlePos == null) {
@@ -1039,9 +1076,9 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 			circlePos = null;
 		}
 	}
-	
+
 	private void drawUserPosition(LatLng point, double accuracy) {
-		if (isMapUpdated && markerBitmap != null){
+		if (isMapUpdated && markerBitmap != null) {
 			isMapUpdated = false;
 			// Draw user point and circle
 			drawAnimatedMarker(point, accuracy);
@@ -1051,89 +1088,89 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 			}
 		}
 	}
-	
+
 	private void drawRoutePosition(RouteProjectedPoint projPoint, double accuracy) {
-		if (isMapUpdated && markerBitmap != null) {		
+		if (isMapUpdated && markerBitmap != null) {
 //			isMapUpdated = false;
 			// Draw projected point
 			drawAnimatedMarker(projPoint.getLatLng(), accuracy);
 			// Update camera
 			CameraPosition cam = new CameraPosition.Builder(map.getCameraPosition())
-			.bearing((float) projPoint.bearing)
-			.target(projPoint.getLatLng())
-			.build();		
-			animateCamera(cam, MAP_TIME_NAVIGATION);			
+					.bearing((float) projPoint.bearing)
+					.target(projPoint.getLatLng())
+					.build();
+			animateCamera(cam, MAP_TIME_NAVIGATION);
 		} else {
-			Log.e("JC", "Not called, isMapUpdated: "+isMapUpdated);
+			Log.e("JC", "Not called, isMapUpdated: " + isMapUpdated);
 		}
 	}
-	
+
 	private void drawRoute(int floornumber) {
 		ArrayList<RoutePoint> points = gs.getRoute().route;
 		if (mapRoute != null) {
-            for (Polyline pl: mapRoute) {
-                pl.remove();
-            }
+			for (Polyline pl : mapRoute) {
+				pl.remove();
+			}
 		}
-        mapRoute = new ArrayList<Polyline>();
-        PolylineOptions lineOpt = new PolylineOptions();
-        for (RoutePoint rp: points) {
-            if (rp.floornumber == floornumber) {
-                lineOpt.add(rp.getLatLng());
-            } else if (lineOpt.getPoints().size() != 0) {
-                lineOpt.color(getResources().getColor(R.color.accentColorDark))
-                        .width(MAP_ROUTE_WIDTH).zIndex(MAP_ZINDEX_ROUTE);
-                mapRoute.add(map.addPolyline(lineOpt));
-                lineOpt = new PolylineOptions();
-            }
-        }
-        if (lineOpt.getPoints().size() != 0) {
-            lineOpt.color(getResources().getColor(R.color.accentColorDark))
-                    .width(MAP_ROUTE_WIDTH).zIndex(MAP_ZINDEX_ROUTE);
-            mapRoute.add(map.addPolyline(lineOpt));
-        }
+		mapRoute = new ArrayList<Polyline>();
+		PolylineOptions lineOpt = new PolylineOptions();
+		for (RoutePoint rp : points) {
+			if (rp.floornumber == floornumber) {
+				lineOpt.add(rp.getLatLng());
+			} else if (lineOpt.getPoints().size() != 0) {
+				lineOpt.color(getResources().getColor(R.color.accentColorDark))
+						.width(MAP_ROUTE_WIDTH).zIndex(MAP_ZINDEX_ROUTE);
+				mapRoute.add(map.addPolyline(lineOpt));
+				lineOpt = new PolylineOptions();
+			}
+		}
+		if (lineOpt.getPoints().size() != 0) {
+			lineOpt.color(getResources().getColor(R.color.accentColorDark))
+					.width(MAP_ROUTE_WIDTH).zIndex(MAP_ZINDEX_ROUTE);
+			mapRoute.add(map.addPolyline(lineOpt));
+		}
 	}
-	
+
 	private void animateCamera(CameraPosition camera, int time) {
-		map.animateCamera(CameraUpdateFactory.newCameraPosition(camera), 
-				time, callbackMapCancelable);	
-		handler.postDelayed(runnableEnableMap, (long) (1.2*time));
+		map.animateCamera(CameraUpdateFactory.newCameraPosition(camera),
+				time, callbackMapCancelable);
+		handler.postDelayed(runnableEnableMap, (long) (1.2 * time));
 	}
-	
-	/** 
-	 *  This method animate the camera to the defined point with default zoom.
-	 *  
+
+	/**
+	 * This method animate the camera to the defined point with default zoom.
+	 *
 	 * @param point Target point
-	 * @param time Animation time
+	 * @param time  Animation time
 	 */
 	private void animateCamera(LatLng point, int time) {
 		animateCamera(point, time, MAP_ZOOM_DEFAULT);
 	}
-	
-	/** 
-	 *  This method animate the camera to the defined point with default zoom.
-	 *  
+
+	/**
+	 * This method animate the camera to the defined point with default zoom.
+	 *
 	 * @param point Target point
-	 * @param time Animation time
-	 * @param zoom Zoom level
+	 * @param time  Animation time
+	 * @param zoom  Zoom level
 	 */
 	private void animateCamera(LatLng point, int time, float zoom) {
 		CameraPosition camera = new CameraPosition.Builder()
-		.target(point)
-		.zoom(zoom)
-		.build();	
+				.target(point)
+				.zoom(zoom)
+				.build();
 		animateCamera(camera, time);
 	}
 
-    private void changeFloor(int floornumber) {
-        if (tileOverlay != null) {
-            tileOverlay.remove();
-        }
-        int position = building.getFloors().indexOfKey(floornumber);
-        tileOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(floors.get(position).getTileProvider()).zIndex(MAP_ZINDEX_TILES));
-        currentFloor = floors.get(position).getFloor();
-    }
-	
+	private void changeFloor(int floornumber) {
+		if (tileOverlay != null) {
+			tileOverlay.remove();
+		}
+		int position = building.getFloors().indexOfKey(floornumber);
+		tileOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(floors.get(position).getTileProvider()).zIndex(MAP_ZINDEX_TILES));
+		currentFloor = floors.get(position).getFloor();
+	}
+
 	private void setMarkerBitmap() {
 		int px = getResources().getDimensionPixelSize(R.dimen.marker_size);
 		markerBitmap = Bitmap.createBitmap(px, px, Bitmap.Config.ARGB_8888);
@@ -1141,21 +1178,87 @@ public class ActivityMap extends ActionBarActivity implements IndoorLocationList
 		Drawable shape = getResources().getDrawable(R.drawable.marker_position);
 		shape.setBounds(0, 0, markerBitmap.getWidth(), markerBitmap.getHeight());
 		shape.draw(canvas);
-		
+
 		storedBitmap = Bitmap.createBitmap(px, px, Bitmap.Config.ARGB_8888);
 		Canvas canvas2 = new Canvas(storedBitmap);
 		Drawable shape2 = getResources().getDrawable(R.drawable.marker_stored);
 		shape2.setBounds(0, 0, storedBitmap.getWidth(), storedBitmap.getHeight());
 		shape2.draw(canvas2);
 	}
-	
+
 	private void onLogout() {
 		SharedPreferences.Editor sharedPrefsEditor = gs.getSharedPrefs().edit();
 		sharedPrefsEditor.putBoolean(FragmentSplashscreen.KEY_PREF_AUTOLOGIN, false);
 		sharedPrefsEditor.commit();
 		finish();
 		Intent i = new Intent(context, ActivityStart.class);
-		startActivity(i);	
+		startActivity(i);
 	}
-	
+
+	private View.OnClickListener storeItemListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			synchronized (mutexPosition) {
+				if (currentPosition != null && currentPosition.type == IndoorLocation.TYPE_IBEACON) {
+					storedPos = new RoutePoint(currentPosition.longitude,
+							currentPosition.latitude,
+							currentPosition.floornumber,
+							currentPosition.buildingId);
+					SharedPreferences.Editor sharedPrefsEditor = gs.getSharedPrefs().edit();
+					sharedPrefsEditor.putString(KEY_STORED_POSITION, storedPos.toLog());
+					sharedPrefsEditor.commit();
+
+					if (storedMarker == null) {
+						storedMarker = map.addMarker(new MarkerOptions().position(storedPos.getLatLng())
+								.icon(BitmapDescriptorFactory.fromBitmap(storedBitmap))
+								.anchor(0.5f, 0.5f).flat(true));
+						storeItem = new CustomSingleItem(getString(R.string.FDUpdate), this);
+						Toast.makeText(context, getString(R.string.FDStoreToast), Toast.LENGTH_LONG).show();
+					} else {
+						storedMarker.setPosition(storedPos.getLatLng());
+						Toast.makeText(context, getString(R.string.FDUpdateToast), Toast.LENGTH_LONG).show();
+					}
+					restoreItem = new CustomSingleItem(getString(R.string.FDRestore), restoreItemListener);
+					deleteItem = new CustomSingleItem(getString(R.string.FDDelete), deleteItemListener);
+					toggleDrawer();
+					populateDrawer();
+				} else {
+					Toast.makeText(context, R.string.AMTMarkerNoIndoor, Toast.LENGTH_LONG).show();
+				}
+			}
+		}
+	};
+
+	private View.OnClickListener restoreItemListener = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			if (!isNavigation) {
+				taskStartNav = new StartNav(storedPos, getResources().getString(R.string.FUBSaved));
+				taskStartNav.execute();
+				toggleDrawer();
+				populateDrawer();
+			}
+		}
+	};
+
+	private View.OnClickListener deleteItemListener = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			SharedPreferences.Editor sharedPrefsEditor = gs.getSharedPrefs().edit();
+			sharedPrefsEditor.remove(KEY_STORED_POSITION);
+			sharedPrefsEditor.commit();
+			storedMarker.remove();
+			storedMarker = null;
+			storedPos = null;
+			storeItem = new CustomSingleItem(getString(R.string.FDStore), storeItemListener);
+			restoreItem = null;
+			deleteItem = null;
+			toggleDrawer();
+			populateDrawer();
+			Toast.makeText(context, getString(R.string.FDDeleteToast), Toast.LENGTH_LONG).show();
+		}
+	};
+
 }

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="indoor-1.2.1-">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Navigator/build/intermediates/exploded-aar/indoor-1.2.1/jars/libs/oym-links-sdk-1.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Navigator/build/intermediates/exploded-aar/indoor-1.2.1/jars/libs/httpclientandroidlib-1.1.2.jar!/" />
+      <root url="file://$PROJECT_DIR$/Navigator/build/intermediates/exploded-aar/indoor-1.2.1/res" />
+      <root url="jar://$PROJECT_DIR$/Navigator/build/intermediates/exploded-aar/indoor-1.2.1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

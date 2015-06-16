@@ -2,25 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.0.0/jars/classes.jar"
+        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
-        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-f530db1aeae4752a83936b777c740a1a8494b5eb.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
-        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-a06b377fa8145208f4d37e21742b3aa94b1fcb3f.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/indoor-1.2.0/jars/libs/oym-links-sdk-1.4.1.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="f8324f6136fa92af6b19f6a36afe2ee760db3738">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/oym-links-sdk-1.4.1-eef3a17f7644797d48947332581491d701def2b3.jar" />
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-09566999b3cd5c9d2f30607fe5ae0c4397d2385c.jar" />
     </item>
     <item
         jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.0.0/jars/classes.jar"
@@ -30,130 +16,39 @@
         <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-f4495e73ea240eb61bdbf114c188e8e0233e3f3d.jar" />
     </item>
     <item
-        jar="/Users/joan/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-xc/1.9.12/2ec470401d7ac760481c84e95be8c66f19f92d2e/jackson-xc-1.9.12.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="2ec470401d7ac760481c84e95be8c66f19f92d2e">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/jackson-xc-1.9.12-072f7144b4ab5311fb36e491cd1d922d7244f7bd.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-09566999b3cd5c9d2f30607fe5ae0c4397d2385c.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/indoor-1.2.0/jars/libs/httpclientandroidlib-1.1.2.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="f99f6cea6f64a886121fdc67f5631bc323d50c20">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/httpclientandroidlib-1.1.2-ad49325d2ad244395b8473b50d665eff9dbd5115.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/classes-ad63cbafd3b73c0abde357668b90e1ca0a5121ff.jar" />
-    </item>
-    <item
-        jar="/Users/joan/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-jaxrs/1.9.12/8bc0bc2e095fd1b83af48b03f67f2ad16e829c01/jackson-jaxrs-1.9.12.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="8bc0bc2e095fd1b83af48b03f67f2ad16e829c01">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/jackson-jaxrs-1.9.12-9129664478d9d733389f379b26d98548add1a629.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/stats/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="30ead5a549494905b15ee1d80edbfbb33fa45d71">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/classes-c4595ae10f6eed97fd7f9a13830717747387aac9.jar" />
-    </item>
-    <item
-        jar="/Users/joan/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-core-asl/1.9.12/ecfc6f73a841c4c3c653b59651a3f9d5f1286469/jackson-core-asl-1.9.12.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="ecfc6f73a841c4c3c653b59651a3f9d5f1286469">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/jackson-core-asl-1.9.12-abca0c5d89be561074f8380939137d93b3ff4826.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/jars/libs/internal_impl-22.0.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/internal_impl-22.0.0-0f4e1c79eb010e7498594916bd77047e20b7eaea.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/classes-6c83a0fc62f650fb1aeecc3d149b8b36c076bd85.jar" />
-    </item>
-    <item
         jar="/Users/joan/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/support-annotations-22.0.0-4a28550ec373974381b220e8178de4f2d6bed473.jar" />
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-4a28550ec373974381b220e8178de4f2d6bed473.jar" />
     </item>
     <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.0.0/jars/classes.jar"
+        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.0.0/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/classes-e7148d37049b3779514f470429cd8bf14ada1fe7.jar" />
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-f530db1aeae4752a83936b777c740a1a8494b5eb.jar" />
     </item>
     <item
-        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/indoor-1.2.0/jars/libs/oym-links-sdk-1.4.1.jar"
+        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/indoor-1.2.1/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="f8324f6136fa92af6b19f6a36afe2ee760db3738">
-        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/oym-links-sdk-1.4.1-e3366bdb132d565fa0a0a24a8788c37305246014.jar" />
+        sha1="0753c2ee47de97fa7a90f297c1b386d422580afe">
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-b0081d9918da66b019f992c6000f8e0658bcac08.jar" />
     </item>
     <item
-        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/indoor-1.2.0/jars/classes.jar"
+        jar="/Users/joan/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-xc/1.9.12/2ec470401d7ac760481c84e95be8c66f19f92d2e/jackson-xc-1.9.12.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="654264940bb221b8c63b03839f1216d50f1e012c">
-        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-ba5d34c3dd25a1487d2859b1395f3a14217e7db1.jar" />
+        sha1="2ec470401d7ac760481c84e95be8c66f19f92d2e">
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/jackson-xc-1.9.12-072f7144b4ab5311fb36e491cd1d922d7244f7bd.jar" />
     </item>
     <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.0.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/classes-2db96d8d7185400ba858fb7bd9ab65107ca3fbb6.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.0.0/jars/classes.jar"
+        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.0.0/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/classes-f7aaf3270a8c31e12023cd8dd7189947b7068764.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
-        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-06cc60d50ed2cd437e96710e25db40711eabcf74.jar" />
-    </item>
-    <item
-        jar="/Users/joan/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-mapper-asl/1.9.12/8b290aae44213e2f6da00c07af59b0d442068f4d/jackson-mapper-asl-1.9.12.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="8b290aae44213e2f6da00c07af59b0d442068f4d">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/jackson-mapper-asl-1.9.12-f6d8fdc193b5527e8797634235d677eb76329c65.jar" />
-    </item>
-    <item
-        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/indoor-1.2.0/jars/libs/httpclientandroidlib-1.1.2.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="f99f6cea6f64a886121fdc67f5631bc323d50c20">
-        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/httpclientandroidlib-1.1.2-7814a0e456cd9745c31f544f360fba62b2bcc476.jar" />
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-5862f226813270f0894214e7c74baa3c6fc8b83d.jar" />
     </item>
     <item
         jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/jars/libs/internal_impl-22.0.0.jar"
@@ -163,25 +58,53 @@
         <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-4e7a4c18c2b55bf490e5a8df37c9f403a202b237.jar" />
     </item>
     <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/jars/classes.jar"
+        jar="/Users/joan/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-mapper-asl/1.9.12/8b290aae44213e2f6da00c07af59b0d442068f4d/jackson-mapper-asl-1.9.12.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="8b290aae44213e2f6da00c07af59b0d442068f4d">
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/jackson-mapper-asl-1.9.12-f6d8fdc193b5527e8797634235d677eb76329c65.jar" />
+    </item>
+    <item
+        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/21.0.3/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-06cc60d50ed2cd437e96710e25db40711eabcf74.jar" />
+    </item>
+    <item
+        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/indoor-1.2.1/jars/libs/oym-links-sdk-1.4.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f8324f6136fa92af6b19f6a36afe2ee760db3738">
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/oym-links-sdk-1.4.1-96304929aabfcecb806824ad4235e382046a430f.jar" />
+    </item>
+    <item
+        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/indoor-1.2.1/jars/libs/httpclientandroidlib-1.1.2.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f99f6cea6f64a886121fdc67f5631bc323d50c20">
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/httpclientandroidlib-1.1.2-6d984dfc285c8b9079c1b3256ba7fa991f9e237f.jar" />
+    </item>
+    <item
+        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="d84409890828e07d344a3b9b1da545dba9897b51">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/classes-06f0fa1fc50f99d1d8d8a21b04f4a92ad8550b71.jar" />
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-a06b377fa8145208f4d37e21742b3aa94b1fcb3f.jar" />
     </item>
     <item
-        jar="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/exploded-aar/indoor-1.2.0/jars/classes.jar"
+        jar="/Users/joan/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-core-asl/1.9.12/ecfc6f73a841c4c3c653b59651a3f9d5f1286469/jackson-core-asl-1.9.12.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="654264940bb221b8c63b03839f1216d50f1e012c">
-        <dex dex="/Users/joan/Documents/JC/Git/Dev-Github/Android-Sample-dev/Navigator/build/intermediates/pre-dexed/normal/debug/classes-3090e57701cb84c59fd87a453d8630059ce8cabc.jar" />
+        sha1="ecfc6f73a841c4c3c653b59651a3f9d5f1286469">
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/jackson-core-asl-1.9.12-abca0c5d89be561074f8380939137d93b3ff4826.jar" />
     </item>
     <item
-        jar="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.0.0/jars/classes.jar"
+        jar="/Users/joan/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-jaxrs/1.9.12/8bc0bc2e095fd1b83af48b03f67f2ad16e829c01/jackson-jaxrs-1.9.12.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
-        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/classes-5862f226813270f0894214e7c74baa3c6fc8b83d.jar" />
+        sha1="8bc0bc2e095fd1b83af48b03f67f2ad16e829c01">
+        <dex dex="/Users/joan/Documents/JC/Git/Release-Github/Android-SDK/Sample app/Android Studio/Navigator/build/intermediates/pre-dexed/debug/jackson-jaxrs-1.9.12-9129664478d9d733389f379b26d98548add1a629.jar" />
     </item>
 
 </items>

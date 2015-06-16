@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/FUBLevelBox"
         android:orientation="vertical"
         android:paddingEnd="16dp"
         android:paddingStart="16dp" >
@@ -43,6 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OYM Switzerland"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/primaryColor"
             android:textSize="24sp" />
     </LinearLayout>
