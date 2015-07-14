@@ -12,7 +12,9 @@ The indoor module is split in three different packages:
 
 ```xml
 <uses-sdk        android:minSdkVersion="18"… ```
-We need to give the app the following permission to be able to use Bluetooth and use the Google Location Services API```xml<!-- Bluetooth --><uses-permission android:name="android.permission.BLUETOOTH" /><uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /><!-- GPS --><uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />```
+We need to give the app the following permission to be able to use Bluetooth and use the Google Location Services API```xml
+<!-- Internet -->
+<uses-permission android:name="android.permission.INTERNET" /><!-- Bluetooth --><uses-permission android:name="android.permission.BLUETOOTH" /><uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /><!-- GPS --><uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />```
 We have to ensure that the device is capable to use Bluetooth Low Energy (Bluetooth 4.0), hence the following feature shall be included```xml<uses-feature        android:name="android.hardware.bluetooth_le"        android:required="true" />```
 Finally we need to define the Indoor Service to be used```xml<application…        <service            android:name="com.oym.indoor.location.IndoorLocationService"            android:exported="false" />```
 
