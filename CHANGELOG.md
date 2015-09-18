@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0 (2015-09-18)
+#### Added features
+- Introducing new GoIndoor class
+- Multimodal navigation
+- Asset finder
+- Automatic maintenance
+
 
 ## 1.4.0 (2015-07-16)
 #### Added features
@@ -21,7 +28,7 @@
 
 #### Added features
 - Notification support
- 
+
 
 ## 1.0.0 (2015-05-01)
 - Initial commit

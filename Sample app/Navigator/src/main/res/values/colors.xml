@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Basic Colors -->
+    <item name="white" type="color">#FFFFFF</item>
+    <item name="whiteHint" type="color">#88FFFFFF</item> 
+    <item name="blueOym" type="color">#1DADE1</item>
+    <item name="blueOymTrans" type="color">#551DADE1</item>
+    <item name="userPosition" type="color">#238796</item>
+	<item name="greyLight" type="color">#E1E1E1</item>
+    
+    <!-- Used colors -->
+	<item name="textColor" type="color">@color/textBlack</item>
+	<item name="textSecondaryColor" type="color">@color/textSecondaryBlack</item>
+	<item name="textDisabledColor" type="color">@color/textDisabledBlack</item>
+	<item name="textDividerColor" type="color">@color/textDividerBlack</item>
+	
+	<!-- Background -->
+    <item name="backgroundStart" type="color">#F54337</item>
+    <item name="backgroundEnd" type="color">#F45435</item>  
+    
+	<!-- Primary Palette: OYM (Red)-->
+	<item name="primaryColor" type="color">#F44336</item> <!-- 500 -->
+	<item name="primaryColorDark" type="color">#B71C1C</item> <!-- 900 -->
+	<item name="primaryColorInverse" type="color">#F2F2F2</item> <!-- Gray! -->
+	<item name="textPrimaryColorDark" type="color">@color/white</item>
+	<item name="textPrimaryColor" type="color">@color/white</item> 
+	
+	<!-- Secondary Palette: OYM2  -->
+	<item name="accentColorLight" type="color">#74DBDB</item> <!-- A200 -->
+	<item name="accentColor" type="color">#67C3C3</item> <!-- A400 -->
+	<item name="accentColorDark" type="color">#439C9C</item> <!-- A700 -->
+	
+	<!-- Text Black -->
+	<item name="textBlack" type="color">#DE000000</item> <!-- Black 87% -->
+	<item name="textSecondaryBlack" type="color">#8A000000</item> <!-- Black 54% -->
+	<item name="textDisabledBlack" type="color">#42000000</item> <!-- Black 26% -->
+	<item name="textDividerBlack" type="color">#1F000000</item> <!-- Black 12% -->
+	
+</resources>

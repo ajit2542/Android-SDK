@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/FUBwidth"
+    android:background="@color/primaryColorInverse"
+    android:gravity="center_vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/primaryColor" />
+
+    <ImageView
+        android:id="@+id/FUBImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="-3dp"
+        android:layout_toStartOf="@+id/FUBLevelBox"
+        android:adjustViewBounds="true"
+        android:maxHeight="@dimen/FUBwidth"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/FUBLevelBox"
+        android:orientation="vertical"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp" >
+
+        <TextView
+            android:id="@+id/FUBDestination"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/FUBYouAre"
+            android:textColor="@color/primaryColor"
+            android:textSize="12sp" />
+
+        <com.oym.indoor.navigation.views.TextViewBold
+            android:id="@+id/FUBLocal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OYM Switzerland"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/primaryColor"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/FUBLevelBox"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@color/primaryColor"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/FUBLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/FUBNumber"
+            android:layout_centerHorizontal="true"
+            android:text="@string/FUBLevel"
+            android:textColor="@color/textPrimaryColor"
+            android:textSize="12sp" />
+
+        <com.oym.indoor.navigation.views.TextViewUltra
+            android:id="@+id/FUBNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-8dp"
+            android:text="0"
+            android:textColor="@color/textPrimaryColor"
+            android:textSize="38sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

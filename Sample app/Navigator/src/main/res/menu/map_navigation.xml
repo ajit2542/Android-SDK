@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/MMNStop"
+        android:title="@string/FDStop"/>
+
+    <item
+        android:id="@+id/MMNCancel"
+        android:title="@string/cancel" />
+
+</menu>

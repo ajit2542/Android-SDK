@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Common Strings -->
+    <string name="app_name">Indoor Navigator</string>
+    <string name="settings">Réglages</string>
+    <string name="enable">Activer</string>
+    <string name="exit">Quitter</string>
+    <string name="add">Ajouter</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Annuler</string>
+    <string name="login">S\'identifier</string>
+    <string name="logout">Se déconnecter</string>
+    <string name="options">Options</string>
+    <string name="help">Aide</string>
+    
+    <!-- Activity Start -->
+    <string name="ASLocationMessage">Pour une meilleure performance, activez les services de localisation et assurez-vous que le mode de haute précision est activé</string>
+    <string name="ASEnablingBt">Bluetooth en cours d\'activation</string>
+
+    <!-- Fragment Splashscreen -->
+    <string name="SLogoDesc">Logo</string>
+    <string name="FSAccountHint">Compte</string>
+    <string name="FSPasswordHint">Mot de passe</string>
+    <string name="FSConnecting">Connexion en cours&#8230;</string>
+    <string name="FSConnectError">Impossible de se connecter au serveur</string>
+    <string name="FSLibError">La librairie indoor ne peux pas démarrer</string>
+    <string name="FSGraph">Construction du réseau&#8230;</string>
+    <string name="FSGraphError">Impossible de construire le réseau</string>
+    <string name="FSConnectUsernameError">Nom du compte incorrect</string>
+    <string name="FSConnectPasswordError">Mot de passe incorrect</string>
+
+    <!-- Help -->
+    <string name="HText">Besoin d\'un identifiant, d\'aide ou de guides techniques ? Contactez nous à l\'adresse indoor@onyourmap.com</string>
+
+    <!-- Fragment Upper Bar -->
+    <string name="FUBDestination">Destination</string>
+    <string name="FUBLevel">Étage</string>
+    <string name="FUBYouAre">Vous êtes à</string>
+    <string name="FUBSaved">Marker</string>
+    
+    <!-- Activity Map -->
+    <string name="AMTitle">Carte</string>
+    <string name="AMDestination">Destination</string>
+    <string name="AMGettingRoute">Calcul de l\'itinéraire en cours&#8230;</string>
+    <string name="AMCustomDest">Destination personnalisée</string>
+
+    <!-- Activity Map Notifications -->
+    <string name="AMNTitle">Notification</string>
+    <string name="AMNEnter">Vous entrez dans</string>
+    <string name="AMNStay">Vous êtes dans</string>
+    <string name="AMNLeave">Vous quittez</string>
+    <string name="AMNNearby">Vous passez à côté de</string>
+
+    <!-- Activity Map Dialog -->
+    <string name="AMDTitle">Quitter l\'app?</string>
+    <string name="AMDNav">La navigation sera indisponible</string>
+    <string name="AMDMap">L\'affichage des cartes indoor sera indisponible</string>
+
+    <!--Activity Map Toast -->
+    <string name="AMTNoInternet">Connexion internet inexistante. L\'application fonctionnera en mode limité</string>
+    <string name="AMTNoBuildings">Il n\'y a pas encore de bâtiment</string>
+    <string name="AMTNoEdges">Aucun réseau de navigation pour %1$s</string>
+    <string name="AMTNoRoute">Pas d\'itinéraire possible jusqu\'à %1$s</string>
+    <string name="AMTMarkerNoIndoor">Seule une position indoor peut être enregistrée</string>
+
+    <!-- Fragment Drawer -->
+    <string name="FDStop">Stopper la navigation</string>
+    <string name="FDAreas">Lieux</string>
+    <string name="FDNoAreas">Lieux indisponibles</string>
+    <string name="FDStoreTitle">Marker</string>    
+    <string name="FDStore">Enregistrer</string>
+    <string name="FDStoreToast">Marker enregistré</string>
+    <string name="FDUpdate">Mettre à jour</string>
+    <string name="FDUpdateToast">Marker mis à jour</string>
+    <string name="FDRestore">Y aller</string>
+    <string name="FDDelete">Supprimer</string>    
+    <string name="FDDeleteToast">Marker supprimé</string>
+
+    <!-- Fragment UserProfile -->
+    <string name="FUPUser">Utilisateur</string>
+    <string name="FUPNavigation">Navigation</string>
+    <string name="FUPNoSettings">Pas de paramètres</string>
+    <string name="FUPSaved">Votre profil a été mis à jour</string>
+    <string name="FUPNotSaved">Your profile cannot be updated</string>
+    <string name="FUPNoSettingsText">Pas encore de paramètres définis dans le backoffice</string>
+
+</resources>
