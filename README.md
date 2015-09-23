@@ -11,7 +11,7 @@ The minimum SDK version that the app should be API 18.
 
 ```xml
 <uses-sdk
-        android:minSdkVersion="18"… 
+        android:minSdkVersion="18"…
 ```
 
 We need to give the app the following permission to be able to use Bluetooth and use the Google Location Services API
@@ -48,7 +48,7 @@ Finally we need to define the Indoor Location Service to be used
 In order to work properly, the app shall include the following Gradle dependencies:
 
 ```groovy
-compile(name:'goindoor-2.0.0', ext:'aar')
+compile 'com.oym.indoor:goindoor:2.0.0@aar'
 compile 'com.android.support:support-v4:23.0.1'
 compile 'com.android.support:appcompat-v7:23.0.1'
 compile 'com.android.support:recyclerview-v7:23.0.1'
@@ -59,13 +59,6 @@ compile 'org.codehaus.jackson:jackson-core-asl:1.9.12'
 compile 'org.codehaus.jackson:jackson-jaxrs:1.9.12'
 compile 'org.codehaus.jackson:jackson-xc:1.9.12'
 ```
-
-It is also required to add the following jars:
-
--	oym-links-sdk.1.4.1.jar
--	httpclientandroidlib-1.1.2.jar
-
-The app shall include the Google Play Services in order to be able to use the Google Location Services API. It is also required the v4, v7 appcompat, v7 recycler view support libraries to compile the app [+info](http://developer.android.com/tools/support-library/setup.html).
 
 
 ## Preparing a sample app
@@ -110,7 +103,7 @@ public final String buildingName;
 /** Building ID */
 public final String building;
 /** Number of geofences */
-public final int geofences;	
+public final int geofences;
 ```
 
 To create a GoIndoor object, the inner Builder class needs to be used:
@@ -169,7 +162,7 @@ ArrayList<Floor> floors = building.getFloorsList();
 UrlTileProvider tiles = floors.get(iFloor).getTileProvider();
 ```
 
-Finally, this `UrlTileProvider` can be directly added to the map. 
+Finally, this `UrlTileProvider` can be directly added to the map.
 
 ```java
 map.addTileOverlay(new TileOverlayOptions().tileProvider(tiles));
@@ -182,13 +175,3 @@ Before exiting the app it is advisable to disconnect from the server. For that, 
 ```java
 go.disconnect();
 ```
-
-
-
-
-
-
-
-
-
-
