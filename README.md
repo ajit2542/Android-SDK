@@ -69,7 +69,7 @@ The next step is to define an `LocationBroadcast` to handle the computed positio
 ```java
 private LocationBroadcast broadcast = new LocationBroadcast() {
 		@Override
-		public void onLocation(IndoorLocation location) {
+		public void onLocation(LocationResult location) {
 			// TODO Auto-generated method stub
 		}
 		@Override
