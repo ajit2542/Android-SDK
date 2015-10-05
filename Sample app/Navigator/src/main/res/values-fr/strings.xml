@@ -21,7 +21,9 @@
     <!-- Fragment Splashscreen -->
     <string name="SLogoDesc">Logo</string>
     <string name="FSAccountHint">Compte</string>
+    <string name="FSAccountError">Entrez le nom du compte</string>
     <string name="FSPasswordHint">Mot de passe</string>
+    <string name="FSPasswordError">Entrez le mot de passe</string>
     <string name="FSConnecting">Connexion en cours&#8230;</string>
     <string name="FSConnectError">Impossible de se connecter au serveur</string>
     <string name="FSLibError">La librairie indoor ne peux pas démarrer</string>

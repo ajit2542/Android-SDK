@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.2 (2015-10-05)
+#### Added features
+- Introducing LOCATION_TYPE_PROJECT
+
+#### Bugs fixed
+- Routing returns null if there is no route found
+
+
 ## 2.0.0 (2015-09-18)
 #### Added features
 - Introducing new GoIndoor class

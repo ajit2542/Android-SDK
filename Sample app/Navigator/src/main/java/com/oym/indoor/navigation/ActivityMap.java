@@ -107,7 +107,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 	private static final String NOTIFICATION_KEY_MESSAGE = "msg";
 	private static final double ROUTE_ARRIVAL_THRESHOLD = 2;
 
-	// View
+	// View	
 	private ActionBar actionBar;
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
@@ -288,7 +288,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 			}
 		}
 
-		// Prepare Drawer
+		// Prepare Drawer        
 		drawerToggle = new ActionBarDrawerToggle(
 				this,                 /* host Activity */
 				drawerLayout,        /* DrawerLayout object */
@@ -816,7 +816,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 
 	private void showUpperBar(int floor) {
 //		if (floor == 2) { // FIXME
-//			fubImage.setImageResource(R.drawable.ic_floor_7_alpha);
+//			fubImage.setImageResource(R.drawable.ic_floor_7_alpha);			
 //		} else {
 //			fubImage.setImageResource(0);
 //		}
@@ -923,7 +923,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 							currentPosition.latitude, currentPosition.floorNumber,
 							currentPosition.building);
 					Route r = gs.getGoIndoor().computeRoute(rp, point);
-					if (r != null) {
+					if (r != null && !r.getProjection(currentPosition).isRecomputeRequired) {
 						gs.setRoute(r);
 						gs.getGoIndoor().getLogger().logRoute(r);
 						return true;
@@ -942,7 +942,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 				showUpperBar();
 				actionBar.hide();
 
-				// FBB visibility handled later, since depends on current inst
+				// FBB visibility handled later, since depends on current inst				
 
 				isNavigation = true;
 				populateDrawer(); // After change flag

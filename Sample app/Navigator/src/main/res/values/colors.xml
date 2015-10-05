@@ -8,6 +8,7 @@
     <item name="blueOymTrans" type="color">#551DADE1</item>
     <item name="userPosition" type="color">#238796</item>
 	<item name="greyLight" type="color">#E1E1E1</item>
+	<item name="yellow" type="color">#F4C136</item>
     
     <!-- Used colors -->
 	<item name="textColor" type="color">@color/textBlack</item>

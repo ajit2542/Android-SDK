@@ -45,21 +45,21 @@ Finally we need to define the Indoor Location Service to be used
 ```
 
 ### Importing libraries
-In order to work properly, the app shall include the following Gradle dependencies:
+The GoIndoor library can be downloaded from the jcenter and maven central repositories using the following statement:
 
 ```groovy
-compile 'com.oym.indoor:goindoor:2.0.0@aar'
-compile 'com.android.support:support-v4:23.0.1'
-compile 'com.android.support:appcompat-v7:23.0.1'
-compile 'com.android.support:recyclerview-v7:23.0.1'
-compile 'com.google.android.gms:play-services-location:7.0.0'
-compile 'com.google.android.gms:play-services-maps:7.0.0'
-compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.12'
-compile 'org.codehaus.jackson:jackson-core-asl:1.9.12'
-compile 'org.codehaus.jackson:jackson-jaxrs:1.9.12'
-compile 'org.codehaus.jackson:jackson-xc:1.9.12'
+compile 'com.oym.indoor:goindoor:2.0.2'
 ```
 
+It might be required to add the following lines inside the android closure:
+
+```groovy
+packagingOptions {
+    exclude 'META-INF/ASL2.0'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/NOTICE'
+}
+```
 
 ## Preparing a sample app
 In order to use the indoor library, a basic Android app shall be created. After making all the modifications mentioned in the previous section, it is necessary to bear in mind that the application is using the Google Services API, Bluetooth and WiFi/Network connection, hence it is necessary to check that all this features are available.
@@ -110,11 +110,10 @@ To create a GoIndoor object, the inner Builder class needs to be used:
 
 ```java
 go = new GoIndoor.Builder()
-                .setContext(this)
+                .setContext(context)
                 .setAccount(account)
                 .setPassword(password)
                 .setConnectCallback(callback)
-                .setContext(context)
                 .build();
 ```
 
@@ -139,7 +138,7 @@ go.stopLocate();
 In order to create a route between two points, these points need to be encoded inside a `RoutePoint` object.
 
 ```java
-public RoutePoint(double x, double y, int floornumber, String buildingId)
+public RoutePoint(double x, double y, int floorNumber, String buildingId)
 ```
 
 To get the `Route` object, it just required to use the `computeRoute()` method:

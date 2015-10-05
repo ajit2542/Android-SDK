@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -54,7 +55,9 @@ public class FragmentSplashscreen extends Fragment {
 	private TextView textview;
 	private LinearLayout loginLayout;
 	private LinearLayout progressLayout;
+	private TextInputLayout accountTextInputLayout;
 	private EditText accountEditText;
+	private TextInputLayout passwordTextInputLayout;
 	private EditText passwordEditText;
 	private Button button;
 	private LinearLayout helpLayout;
@@ -135,7 +138,9 @@ public class FragmentSplashscreen extends Fragment {
 		textview = (TextView) view.findViewById(R.id.STextview);
 		loginLayout = (LinearLayout) view.findViewById(R.id.SLoginLayout);
 		progressLayout = (LinearLayout) view.findViewById(R.id.SProgressLayout);
+		accountTextInputLayout = (TextInputLayout) view.findViewById(R.id.SAccountTextInputLayout);
 		accountEditText = (EditText) view.findViewById(R.id.SAccountEditText);
+		passwordTextInputLayout = (TextInputLayout) view.findViewById(R.id.SPasswordTextInputLayout);
 		passwordEditText = (EditText) view.findViewById(R.id.SPasswordEditText);
 		button = (Button) view.findViewById(R.id.SButton);
 		helpLayout = (LinearLayout) view.findViewById(R.id.SInfoLayout);
@@ -230,12 +235,44 @@ public class FragmentSplashscreen extends Fragment {
 			gs.setGoIndoor(new GoIndoor.Builder()
 					.setAccount(user)
 					.setPassword(password)
+					.setLocationType(GoIndoor.LOCATION_TYPE_PROJECT)
 					.setConnectCallback(callbackConnect)
 					.setContext(gs.getBaseContext())
 					.build());
 		}
 	}
-	
+
+	public void onClickLogin() {
+		boolean isEmpty = false;
+		String u = accountEditText.getText().toString().trim();
+		String p = passwordEditText.getText().toString().trim();
+
+		// Check fields
+		if (u.matches("")) {
+			accountTextInputLayout.setError(getResources().getString(R.string.FSAccountError));
+			isEmpty = true;
+		} else {
+			accountTextInputLayout.setError(null);
+			accountTextInputLayout.setErrorEnabled(false);
+		}
+		if (p.matches("")) {
+			passwordTextInputLayout.setError(getResources().getString(R.string.FSPasswordError));
+			isEmpty = true;
+		} else {
+			passwordTextInputLayout.setError(null);
+			passwordTextInputLayout.setErrorEnabled(false);
+		}
+
+		if (!isEmpty) {
+			SharedPreferences.Editor sharedPrefsEditor = gs.getSharedPrefs().edit();
+			sharedPrefsEditor.putString(KEY_PREF_USER, u);
+			sharedPrefsEditor.putString(KEY_PREF_PASSWORD, p);
+			sharedPrefsEditor.apply();
+			showText(R.string.FSConnecting);
+			startApp(u, p);
+		}
+	}
+	/*
 	private void onClickLogin() {
 		String u = accountEditText.getText().toString().trim();
 		String p = passwordEditText.getText().toString().trim();		
@@ -245,7 +282,7 @@ public class FragmentSplashscreen extends Fragment {
 		sharedPrefsEditor.apply();
 		showText(R.string.FSConnecting);
 		startApp(u, p);
-	}
+	}*/
 	
 	@Override
 	public void onDestroy() {
