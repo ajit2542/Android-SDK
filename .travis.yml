@@ -1,0 +1,26 @@
+language: android
+android:
+  components:
+  - platform-tools
+  - tools
+  - build-tools-23.0.1
+  - android-23
+  - extra-android-support
+  - extra-google-google_play_services
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - addon-google_apis-google-23
+  - sys-img-armeabi-v7a-android-21
+before_install:
+- export TERM=dumb
+- 'cd Sample\ app'
+- "./gradlew -v"
+- uname -a
+script:
+- "./gradlew clean build"
+notifications:
+  email:
+    recipients: EMAIL_JCO
+env:
+  global:
+    secure: JSJTen5BuimSIaggfS6+WtolXB/Yl7ye71OozT8L5XHUsF5b9wEvAKaHooLhDrP2YRBLbB4WPDO2GwScckusVxsh6t/E7iSTVlAvCgiyvWouWYDclNdxQ0Az4F+36i/s3A/5N+4XFpLzyikyWBCHJ0Zuqpx+otOH8EWgoAHZhO7Jby6xTtpsWu4T9r/5nqz+q15lOACWt73H8u3RtxGpNExXuX1lZJUEqQSbf8FbkIJLfN2YcsEYEkqaPeMvY1PRKHDFDbMA+HydJjPRDeWijRI/UWO7tTPiBjLf9812DjQU6z69sjvyM5CbuAmedvygv7ODYAbPfHRagLzR1pS9NLz7MsfIhh+W19Qps/WU/GYm5jI5IipKjGYh2EEGgTu7kQ1ng7nlhRGDvoQ6RWnk+bEHAx5w6DT47dbuemm6aJAMxq/s52nPc+sS+yBeh13CkxQnG9yVd+3XhY/eNMflonPKntqE7Qtn8GIodOwW4zmyuN1PiRt0fHLxzbTTSD4ie4hia71wsuwaVdymTayFnmEO02zy4mCDl4B9EHkOQLEf1u0DqpYP3/YOOgOs5lhKlT5AeAQlFSUHPDjoKuBtuIwOaFo9mzxmkDF15SAtmXOUwf7hUDGdNK3F1TP+eIb8a0JHbnYZFL2QHFc7xKGBf8gLM8iJ09wmQOyo54gvuW4=
