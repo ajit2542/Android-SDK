@@ -48,7 +48,7 @@ Finally we need to define the Indoor Location Service to be used
 The GoIndoor library can be downloaded from the jcenter and maven central repositories using the following statement:
 
 ```groovy
-compile 'com.oym.indoor:goindoor:2.0.2'
+compile 'com.oym.indoor:goindoor:2.0.3'
 ```
 
 It might be required to add the following lines inside the android closure:
