@@ -61,6 +61,7 @@
 
     <!--Activity Map Toast -->
     <string name="AMTNoInternet">No internet connection is available. App features might be limited</string>
+    <string name="AMTNoBt">Bluetooth has been disabled. Indoor location will not be available</string>
     <string name="AMTNoBuildings">No building has been created yet</string>
     <string name="AMTNoEdges">Navigation network for %1$s is not created</string>
     <string name="AMTNoRoute">Route cannot be computed to %1$s</string>

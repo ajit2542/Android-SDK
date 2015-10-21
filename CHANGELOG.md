@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3 (2015-10-21)
+#### Bugs fixed
+- Fixing asset manager bug that might stop the SDK under certain conditions
+- Correcting treatment of empty strings for Notification targets
+
+
 ## 2.0.2 (2015-10-05)
 #### Added features
 - Introducing LOCATION_TYPE_PROJECT

@@ -2,17 +2,22 @@ package com.oym.indoor.navigation;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.SwitchCompat;
 import android.text.InputType;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,8 +38,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.oym.indoor.Values;
+import com.oym.links.sdk.OYMLinks;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +62,48 @@ public class FragmentUserProfile extends Fragment  {
     private HashMap<String, View> values = new HashMap<>();
     private HashMap<String, View> valuesNav = new HashMap<>();
 
+
+    public static class DatePickerFragment extends AppCompatDialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        EditText textView;
+
+        public DatePickerFragment() {
+            super();
+        }
+
+        public DatePickerFragment(EditText tv) {
+            super();
+            textView = tv;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar c = Calendar.getInstance();
+            int year, month, day;
+
+            try {
+                String dateStr = textView.getText().toString() + "T00:00:00.000Z";
+                Date date = OYMLinks.getDateFromIso8601UTCString(dateStr);
+                c.setTime(date);
+            } catch (Exception exc) {
+                Log.e("DatePickerFragment", "Wrong date, taking current", exc);
+            } finally {
+                year = c.get(Calendar.YEAR);
+                month = c.get(Calendar.MONTH);
+                day = c.get(Calendar.DAY_OF_MONTH);
+            }
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int m, int day) {
+            int month = m + 1;
+            String date = String.format("%04d-%02d-%02d", year, month, day);
+            textView.setText(date);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -233,6 +284,23 @@ public class FragmentUserProfile extends Fragment  {
                 valueView = cb;
                 break;
             case DATE:
+                final EditText tvDateStr = new EditText(ctw);
+                tvDateStr.setText(value.toString().split("T")[0]);
+                tvDateStr.setSingleLine();
+                tvDateStr.setTextAppearance(gs, android.support.v7.appcompat.R.style.TextAppearance_AppCompat_Body1);
+                tvDateStr.setTextColor(getResources().getColor(R.color.textColor));
+                tvDateStr.setLayoutParams(lp);
+                tvDateStr.setFocusable(false);
+                tvDateStr.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        hideKeyboard();
+                        DialogFragment newFragment = new DatePickerFragment(tvDateStr);
+                        newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+                    }
+                });
+                valueView = tvDateStr;
+                break;
             case STRING:
                 EditText tvStr = new EditText(ctw);
                 tvStr.setText(value.toString());
@@ -282,7 +350,9 @@ public class FragmentUserProfile extends Fragment  {
                 res = new Values.Settings.UserValue<>(((SwitchCompat)entry.getValue()).isChecked(), Values.Format.BOOLEAN);
                 break;
             case DATE:
-                res = new Values.Settings.UserValue<>(((EditText)entry.getValue()).getText().toString(), Values.Format.DATE);
+                String currentDate = ((EditText)entry.getValue()).getText().toString();
+                currentDate += "T00:00:00.000Z";
+                res = new Values.Settings.UserValue<>(currentDate, Values.Format.DATE);
                 break;
             case NUMBER:
                 res = new Values.Settings.UserValue<>(Double.parseDouble(((EditText) entry.getValue()).getText().toString()), Values.Format.NUMBER);
