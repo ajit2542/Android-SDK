@@ -61,6 +61,7 @@
 
     <!--Activity Map Toast -->
     <string name="AMTNoInternet">Connexion internet inexistante. L\'application fonctionnera en mode limité</string>
+    <string name="AMTNoBt">Bluetooth désactivé, la localisation indoor ne sera plus disponible</string>
     <string name="AMTNoBuildings">Il n\'y a pas encore de bâtiment</string>
     <string name="AMTNoEdges">Aucun réseau de navigation pour %1$s</string>
     <string name="AMTNoRoute">Pas d\'itinéraire possible jusqu\'à %1$s</string>

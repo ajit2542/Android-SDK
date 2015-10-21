@@ -61,6 +61,7 @@
 
     <!--Activity Map Toast -->
     <string name="AMTNoInternet">S\'ha perdut la connexió a internet. Les functions de l\'app es poden veure limitades</string>
+    <string name="AMTNoBt">S\'ha desactivat el Bluetooth. La posició indoor no serà disponible</string>
     <string name="AMTNoBuildings">No s\'ha creat cap edifici per a aquest compte</string>
     <string name="AMTNoEdges">No s\'ha creat la xarxa de navegació per %1$s</string>
     <string name="AMTNoRoute">No es pot calcular la ruta cap a %1$s</string>

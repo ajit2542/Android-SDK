@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -207,6 +208,20 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 				hasInternet = false;
 			} else if (ani != null && ani.isConnected()) {
 				hasInternet = true;
+			}
+		}
+	};
+
+	private BroadcastReceiver btListener = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(intent.getAction())) {
+				if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_TURNING_OFF) {
+					Toast.makeText(context, R.string.AMTNoBt, Toast.LENGTH_LONG).show();
+
+				//} else if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_ON) {
+				//	startLeUnknownScan();
+				}
 			}
 		}
 	};
@@ -428,6 +443,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 
 		// Register connectivity change receiver
 		registerReceiver(changeConnection, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+		registerReceiver(btListener, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 	}
 
 	@Override
@@ -436,6 +452,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 
 		// Detach connectivity change receiver
 		unregisterReceiver(changeConnection);
+		unregisterReceiver(btListener);
 	}
 
 	@Override
