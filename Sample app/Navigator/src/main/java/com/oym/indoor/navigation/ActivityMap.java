@@ -108,7 +108,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 	private static final String NOTIFICATION_KEY_MESSAGE = "msg";
 	private static final double ROUTE_ARRIVAL_THRESHOLD = 2;
 
-	// View	
+	// View
 	private ActionBar actionBar;
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
@@ -303,7 +303,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 			}
 		}
 
-		// Prepare Drawer        
+		// Prepare Drawer
 		drawerToggle = new ActionBarDrawerToggle(
 				this,                 /* host Activity */
 				drawerLayout,        /* DrawerLayout object */
@@ -432,6 +432,15 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 			}
 		}
 		populateDrawer();
+
+		// Read Options Preferences
+		String locAlgoStr = gs.getSharedPrefs().getString(getString(R.string.FPOLocationAlgKey), "0");
+		int locAlgo = Integer.parseInt(locAlgoStr);
+		//noinspection ResourceType
+		gs.getGoIndoor().setLocationType(locAlgo);
+		if (gs.getSharedPrefs().getBoolean(getString(R.string.FPOForceScanKey), false)) {
+			gs.getGoIndoor().setScanForced(true);
+		}
 
 		// Attach listener
 		gs.addLocationCallback(this);
@@ -801,6 +810,22 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 		items.add(new CustomListView.CustomDivider());
 		items.add(new CustomSection(getString(R.string.settings)));
 		items.add(itemUserProfile);
+		items.add(new CustomSingleItem(getString(R.string.FDOptions), new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				getSupportFragmentManager().beginTransaction().replace(R.id.MMap, new FragmentOptions(), "Options").addToBackStack("map").commit();
+				actionBar.show();
+				actionBar.setTitle(getString(R.string.FDOptions));
+				actionBar.setDisplayHomeAsUpEnabled(true);
+				drawerToggle.setDrawerIndicatorEnabled(false);
+				drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+				hideUpperBar();
+				hideBottomBar();
+				if (!isNavigation) {
+					hideViewAnimated(fab);
+				}
+			}
+		}));
 		items.add(new CustomSingleItem(getString(R.string.logout), new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -833,7 +858,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 
 	private void showUpperBar(int floor) {
 //		if (floor == 2) { // FIXME
-//			fubImage.setImageResource(R.drawable.ic_floor_7_alpha);			
+//			fubImage.setImageResource(R.drawable.ic_floor_7_alpha);
 //		} else {
 //			fubImage.setImageResource(0);
 //		}
@@ -959,7 +984,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 				showUpperBar();
 				actionBar.hide();
 
-				// FBB visibility handled later, since depends on current inst				
+				// FBB visibility handled later, since depends on current inst
 
 				isNavigation = true;
 				populateDrawer(); // After change flag

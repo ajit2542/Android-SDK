@@ -13,7 +13,10 @@
         <item name="colorAccent">@color/accentColor</item>
         <item name="android:textColorPrimary">@color/textColor</item>
         <item name="android:textColorSecondary">@color/textSecondaryColor</item>
-        
+
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="android:activatedBackgroundIndicator">?android:attr/selectableItemBackground</item>
+
     </style>
 
     <!-- Application theme. -->
