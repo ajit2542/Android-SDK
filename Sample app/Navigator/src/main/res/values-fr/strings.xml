@@ -79,6 +79,8 @@
     <string name="FDRestore">Y aller</string>
     <string name="FDDelete">Supprimer</string>    
     <string name="FDDeleteToast">Marker supprimé</string>
+    <string name="FDUserProfile">Profil</string>
+    <string name="FDOptions">@string/options</string>
 
     <!-- Fragment UserProfile -->
     <string name="FUPUser">Utilisateur</string>
@@ -87,5 +89,13 @@
     <string name="FUPSaved">Votre profil a été mis à jour</string>
     <string name="FUPNotSaved">Your profile cannot be updated</string>
     <string name="FUPNoSettingsText">Pas encore de paramètres définis dans le backoffice</string>
+
+    <!-- Fragment Preferences Options -->
+    <string name="FPOLocationSection">Paramètres de localisation</string>
+    <string name="FPOLocationAlgTitle">Algorithme de localisation</string>
+    <string name="FPOLocationAlgSummary">Utilisation de l\'algorithme %1$s</string>
+    <string name="FPOBetaSection">Fonctionnalité en beta</string>
+    <string name="FPOForceScanTitle">Forcer le scan</string>
+    <string name="FPOForceScanSummary">Redémarrer le scan des beacons régulièrement</string>
 
 </resources>

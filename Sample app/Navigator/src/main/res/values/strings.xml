@@ -80,6 +80,7 @@
     <string name="FDDelete">Delete</string>    
     <string name="FDDeleteToast">Marker deleted</string>
     <string name="FDUserProfile">Profile</string>
+    <string name="FDOptions">@string/options</string>
 
     <!-- Fragment UserProfile -->
     <string name="FUPUser">User</string>
@@ -88,5 +89,16 @@
     <string name="FUPSaved">Your profile has been updated</string>
     <string name="FUPNotSaved">Your profile cannot be updated</string>
     <string name="FUPNoSettingsText">No settings defined in the backoffice yet</string>
-    
+
+    <!-- Fragment Preferences Options -->
+    <string name="FPOLocationSection">Location Settings</string>
+    <string name="FPOLocationAlgKey" translatable="false">FPOLocationAlgKey</string>
+    <string name="FPOLocationAlgTitle">Location Algorithm</string>
+    <string name="FPOLocationAlgSummary">Using %1$s algorithm</string>
+    <string name="FPOBetaSection">Beta features</string>
+    <string name="FPOForceScanKey" translatable="false">FPOForceScanKey</string>
+    <string name="FPOForceScanTitle">Force scan</string>
+    <string name="FPOForceScanSummary">Restarts beacon scan periodically</string>
+
+
 </resources>

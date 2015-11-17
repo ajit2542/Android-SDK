@@ -3,6 +3,7 @@
 ## Introduction
 
 The Goindoor library handles the communication to the server and provides easy access to the developer to the data, as well as several addition features, such as location provider, routing, statistics and asset management.
+An extensive developer documentation can be found [here](http://indoor-onyourmap.github.io/Android-SDK/).
 
 
 ## Preparing the environment
@@ -45,10 +46,10 @@ Finally we need to define the Indoor Location Service to be used
 ```
 
 ### Importing libraries
-The GoIndoor library can be downloaded from the jcenter and maven central repositories using the following statement:
+The Goindoor library can be downloaded from the jcenter and maven central repositories using the following statement:
 
 ```groovy
-compile 'com.oym.indoor:goindoor:2.0.3'
+compile 'com.oym.indoor:goindoor:2.0.4'
 ```
 
 It might be required to add the following lines inside the android closure:
@@ -60,6 +61,7 @@ packagingOptions {
     exclude 'META-INF/NOTICE'
 }
 ```
+
 
 ## Preparing a sample app
 In order to use the indoor library, a basic Android app shall be created. After making all the modifications mentioned in the previous section, it is necessary to bear in mind that the application is using the Google Services API, Bluetooth and WiFi/Network connection, hence it is necessary to check that all this features are available.

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Fragment Preferences Options -->
+    <string-array name="FPOLocationTypes">
+        <item>Moyenne</item>
+        <item>Au plus proche</item>
+        <item>Projection</item>
+    </string-array>
+
+</resources>

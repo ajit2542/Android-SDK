@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Fragment Preferences Options -->
+    <string-array name="FPOLocationTypes">
+        <item>Mitjana</item>
+        <item>El més proper</item>
+        <item>Projecció</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/primaryColorInverse">
+
+    <PreferenceCategory android:background="@color/primaryColorInverse"
+        android:title="@string/FPOLocationSection">
+        <ListPreference android:title="@string/FPOLocationAlgTitle"
+            android:summary="@string/FPOLocationAlgSummary"
+            android:key="@string/FPOLocationAlgKey"
+            android:defaultValue="0"
+            android:entries="@array/FPOLocationTypes"
+            android:entryValues="@array/FPOLocationTypeValues" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:background="@color/primaryColorInverse"
+        android:title="@string/FPOBetaSection">
+        <CheckBoxPreference
+            android:key="@string/FPOForceScanKey"
+            android:title="@string/FPOForceScanTitle"
+            android:summary="@string/FPOForceScanSummary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

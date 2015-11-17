@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.4 (2015-11-17)
+#### Added features
+- Adding beta feature: Force BLE scan
+- Location algorithm can be changed after GoIndoor initialization
+
+#### Bugs fixes
+- Correcting support for stairs, lifts and escalators
+
+
 ## 2.0.3 (2015-10-21)
 #### Bugs fixed
 - Fixing asset manager bug that might stop the SDK under certain conditions

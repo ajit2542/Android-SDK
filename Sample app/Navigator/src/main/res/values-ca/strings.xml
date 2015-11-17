@@ -80,6 +80,7 @@
     <string name="FDDelete">Esborrar</string>    
     <string name="FDDeleteToast">Punt esborrat</string>
     <string name="FDUserProfile">Perfil</string>
+    <string name="FDOptions">@string/options</string>
 
     <!-- Fragment UserProfile -->
     <string name="FUPUser">Usuari</string>
@@ -88,5 +89,13 @@
     <string name="FUPSaved">S\'ha actualitzat el perfil</string>
     <string name="FUPNotSaved">No es pot actualitzar el perfil</string>
     <string name="FUPNoSettingsText">No s\'ha definit la configuració d\'usuaris al backoffice</string>
-    
+
+    <!-- Fragment Preferences Options -->
+    <string name="FPOLocationSection">Location Settings</string>
+    <string name="FPOLocationAlgTitle">Location Algorithm</string>
+    <string name="FPOLocationAlgSummary">Algoritme utilitzat: %1$s </string>
+    <string name="FPOBetaSection">Funcionalitats beta</string>
+    <string name="FPOForceScanTitle">Force scan</string>
+    <string name="FPOForceScanSummary">Restarts beacon scan periodically</string>
+
 </resources>
