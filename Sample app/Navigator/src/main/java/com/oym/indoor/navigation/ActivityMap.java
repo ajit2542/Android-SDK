@@ -72,6 +72,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.oym.indoor.Building;
+import com.oym.indoor.GoIndoor;
 import com.oym.indoor.Instruction;
 import com.oym.indoor.Instruction.InstructionType;
 import com.oym.indoor.InstructionAdapter;
