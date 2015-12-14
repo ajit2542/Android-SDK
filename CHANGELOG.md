@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.5 (2015-12-14)
+#### Bugs fixes
+- Correcting how floor ID is computed in LocationResult
+
+
 ## 2.0.4 (2015-11-17)
 #### Added features
 - Adding beta feature: Force BLE scan

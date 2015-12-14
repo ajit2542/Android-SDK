@@ -72,6 +72,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.oym.indoor.Building;
+import com.oym.indoor.GoIndoor;
 import com.oym.indoor.Instruction;
 import com.oym.indoor.Instruction.InstructionType;
 import com.oym.indoor.InstructionAdapter;
@@ -434,13 +435,18 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 		populateDrawer();
 
 		// Read Options Preferences
-		String locAlgoStr = gs.getSharedPrefs().getString(getString(R.string.FPOLocationAlgKey), "0");
-		int locAlgo = Integer.parseInt(locAlgoStr);
-		//noinspection ResourceType
-		gs.getGoIndoor().setLocationType(locAlgo);
-		if (gs.getSharedPrefs().getBoolean(getString(R.string.FPOForceScanKey), false)) {
-			gs.getGoIndoor().setScanForced(true);
-		}
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				String locAlgoStr = gs.getSharedPrefs().getString(getString(R.string.FPOLocationAlgKey), String.valueOf(GoIndoor.LOCATION_TYPE_PROJECT));
+				int locAlgo = Integer.parseInt(locAlgoStr);
+				//noinspection ResourceType
+				gs.getGoIndoor().setLocationType(locAlgo);
+				if (gs.getSharedPrefs().getBoolean(getString(R.string.FPOForceScanKey), false)) {
+					gs.getGoIndoor().setScanForced(true);
+				}
+			}
+		}, 600);
 
 		// Attach listener
 		gs.addLocationCallback(this);
