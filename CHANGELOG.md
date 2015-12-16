@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.5-HOTFIX (2015-12-16)
+#### Bugs fixes
+- Updating Google Play Services to 8.3.0
+- Updating build tools to 23.0.2
+- Updating support library to 23.1.1
+
+
 ## 2.0.5 (2015-12-14)
 #### Bugs fixes
 - Correcting how floor ID is computed in LocationResult
