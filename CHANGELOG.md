@@ -1,14 +1,19 @@
 # Changelog
 
+## 2.0.6 (2016-01-22)
+#### Bugs fixed
+- Improving switching floors experience
+
+
 ## 2.0.5-HOTFIX (2015-12-16)
-#### Bugs fixes
+#### Bugs fixed
 - Updating Google Play Services to 8.3.0
 - Updating build tools to 23.0.2
 - Updating support library to 23.1.1
 
 
 ## 2.0.5 (2015-12-14)
-#### Bugs fixes
+#### Bugs fixed
 - Correcting how floor ID is computed in LocationResult
 
 
@@ -17,7 +22,7 @@
 - Adding beta feature: Force BLE scan
 - Location algorithm can be changed after GoIndoor initialization
 
-#### Bugs fixes
+#### Bugs fixed
 - Correcting support for stairs, lifts and escalators
 
 
