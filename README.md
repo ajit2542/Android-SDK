@@ -1,4 +1,4 @@
-# Goindoor SDK for Android
+# Goindoor SDK for Android [ ![Download](https://api.bintray.com/packages/goindoor/maven/goindoor/images/download.svg) ](https://bintray.com/goindoor/maven/goindoor/_latestVersion)
 
 ## Introduction
 
@@ -49,7 +49,7 @@ Finally we need to define the Indoor Location Service to be used
 The Goindoor library can be downloaded from the jcenter and maven central repositories using the following statement:
 
 ```groovy
-compile 'com.oym.indoor:goindoor:2.0.6'
+compile 'com.oym.indoor:goindoor:2.1.0'
 ```
 
 It might be required to add the following lines inside the android closure:

@@ -37,8 +37,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.oym.indoor.Utils;
 import com.oym.indoor.Values;
-import com.oym.links.sdk.OYMLinks;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,7 +83,7 @@ public class FragmentUserProfile extends Fragment  {
 
             try {
                 String dateStr = textView.getText().toString() + "T00:00:00.000Z";
-                Date date = OYMLinks.getDateFromIso8601UTCString(dateStr);
+                Date date = Utils.getDateFromIso8601UTCString(dateStr);
                 c.setTime(date);
             } catch (Exception exc) {
                 Log.e("DatePickerFragment", "Wrong date, taking current", exc);
