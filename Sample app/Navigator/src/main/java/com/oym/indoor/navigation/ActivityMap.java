@@ -720,7 +720,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 	@Override
 	public void onNotification(NotificationResult nr) {
 		String msg = nr.notification.properties.get(NOTIFICATION_KEY_MESSAGE);
-		if (msg == null) {
+		if (msg == null || msg.isEmpty()) {
 			switch (nr.notification.action) {
 				case ENTER:
 					msg = gs.getString(R.string.AMNEnter) + " " + nr.place.getName();
