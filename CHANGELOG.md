@@ -1,12 +1,21 @@
 # Changelog
 
+## 2.2.1 (2016-07-27)
+#### Added features
+- Improved closest algorithm
+- Projection is done in edges that fulfill the properties
+
+#### Bugs fixed
+- Correcting beacon maintenance in multiple floors
+
+
 ## 2.2.0 (2016-05-11)
 #### Added features
 - Introducing DDB
 - Introducing Offline tiles
 
 #### Bugs fixed
-- Correcting behaviour when no buildings are present in the workspace
+- Correcting behavior when no buildings are present in the workspace
 - Correcting a bug that might not decode some edge properly under some circumstances
 - Improving data sync
 - Adding WebService UTF-8 support
