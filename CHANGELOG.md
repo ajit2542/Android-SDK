@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.1 (2016-11-23)
+#### Bugs fixed
+- Correcting indoor tiles providers
+
+
 ## 2.3.0 (2016-11-23)
 #### Added features
 - Using the new www.goindoor.co servers
