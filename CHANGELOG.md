@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.3 (2017-04-20)
+#### Added features
+- Updating android dependencies to the latest version
+
+
 ## 2.3.1 (2016-11-23)
 #### Bugs fixed
 - Correcting indoor tiles providers
