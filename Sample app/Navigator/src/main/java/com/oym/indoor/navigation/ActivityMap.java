@@ -59,6 +59,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.CancelableCallback;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -94,7 +95,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.ArrayList;
 
-public class ActivityMap extends AppCompatActivity implements IndoorLocationListener {
+public class ActivityMap extends AppCompatActivity implements IndoorLocationListener, OnMapReadyCallback {
 
 	private static final float MAP_CIRCLE_STROKE = 5;
 	private static final float MAP_ROUTE_WIDTH = 10;
@@ -274,34 +275,7 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 		actionBar.hide();
 
 		if (map == null) {
-			map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.MMap)).getMap();
-			if (map != null) {
-				map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-				map.setIndoorEnabled(false);
-				map.setBuildingsEnabled(false);
-				map.getUiSettings().setZoomControlsEnabled(false);
-				map.setOnMapLoadedCallback(new OnMapLoadedCallback() {
-
-					@Override
-					public void onMapLoaded() {
-						isFirstMapUpdate = true;
-						showViewAnimated(fab);
-
-						map.setOnMapLongClickListener(new OnMapLongClickListener() {
-
-							@Override
-							public void onMapLongClick(LatLng point) {
-								// FIXME How destination is set
-								if (!isNavigation && isBuildingReady && isNavigationReady) {
-									destination = new RoutePoint(point.longitude, point.latitude, currentFloor, building.getId());
-									taskStartNav = new StartNav(destination, getResources().getString(R.string.AMCustomDest));
-									taskStartNav.execute();
-								}
-							}
-						});
-					}
-				});
-			}
+			((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.MMap)).getMapAsync(this);
 		}
 
 		// Prepare Drawer
@@ -588,6 +562,38 @@ public class ActivityMap extends AppCompatActivity implements IndoorLocationList
 				return super.onContextItemSelected(item);
 		}
 
+	}
+
+	@Override
+	public void onMapReady(GoogleMap googleMap) {
+		map = googleMap;
+		if (map != null) {
+			map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+			map.setIndoorEnabled(false);
+			map.setBuildingsEnabled(false);
+			map.getUiSettings().setZoomControlsEnabled(false);
+			map.setOnMapLoadedCallback(new OnMapLoadedCallback() {
+
+				@Override
+				public void onMapLoaded() {
+					isFirstMapUpdate = true;
+					showViewAnimated(fab);
+
+					map.setOnMapLongClickListener(new OnMapLongClickListener() {
+
+						@Override
+						public void onMapLongClick(LatLng point) {
+							// FIXME How destination is set
+							if (!isNavigation && isBuildingReady && isNavigationReady) {
+								destination = new RoutePoint(point.longitude, point.latitude, currentFloor, building.getId());
+								taskStartNav = new StartNav(destination, getResources().getString(R.string.AMCustomDest));
+								taskStartNav.execute();
+							}
+						}
+					});
+				}
+			});
+		}
 	}
 
 	@Override
